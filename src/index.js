@@ -1,16 +1,37 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import {createStore, applyMiddleware, compose} from 'redux';
+import allReducers from './redux/reducers';
+import thunk from 'redux-thunk';
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
+import {blue, lightBlue} from "@material-ui/core/colors";
+import Root from './Root';
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+const myStore = createStore(
+    allReducers,
+    compose(
+        applyMiddleware(thunk),
+        //todo: comment below line out when not using Redux DevTools
+        // (commenting the below line out allows app to work on other browsers besides Chrome)
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+const theme = createMuiTheme({
+    palette: {
+        primary: {
+            main: lightBlue[500]
+        },
+        secondary: {
+            main: blue[500]
+        }
+    }
+});
+
+ReactDOM.render(
+    <MuiThemeProvider theme={theme}>
+        <Root store={myStore}/>
+    </MuiThemeProvider>
+    , document.getElementById('root')
+);
