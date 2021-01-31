@@ -1,0 +1,14 @@
+.hidden {
+    visibility: hidden;
+}
+
+.error-message {
+    color: red;
+    margin: auto;
+    text-align: center;
+    padding: 10px;
+}
+
+.error-color {
+    color: red;
+}
