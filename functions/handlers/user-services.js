@@ -5,24 +5,24 @@ const firebase = require('firebase');
 
 const strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
 
-const signUpSchema = {
+const signUpSchema = Joi.object({
     firstName: Joi.string().required(),
     lastName: Joi.string().required(),
     email: Joi.string().email().required(),
     password: Joi.string().regex(strongPasswordRegex, 'password').required(),
     userType: Joi.string().required()
-};
+});
 
-const signInSchema = {
+const signInSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().regex(strongPasswordRegex, 'password').required(),
-};
+});
 
 // Req requires: firstName, lastName, email, password, userType
 // Res returns on success: Status 200, 'User added successfully.'
 // Res returns on fail: Status 400, bad request | Status 500, why sign up failed message with firebase
 exports.signUpUser = (req, res) => {
-    const validation = Joi.validate(req.body, signUpSchema);
+    const validation = signUpSchema.validate(req.body);
 
     if (validation.error) {
         let err = {message:validation.error.details[0].message};
@@ -76,7 +76,7 @@ exports.signUpUser = (req, res) => {
 // Res returns on fail: Status 403, Bad Password
 // Res returns on fail: Status 500, Server Error
 exports.signInUser = (req, res) => {
-    const validation = Joi.validate(req.body, signInSchema);
+    const validation = signInSchema.validate(req.body);
     if (validation.error) {
         return res.status(400).send(validation.error.details[0].message);
     }

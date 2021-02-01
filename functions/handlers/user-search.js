@@ -2,9 +2,9 @@ const {database} = require("../util/admin");
 const Joi = require('joi');
 const Fuse = require('fuse.js');
 
-const searchParameterSchema = {
+const searchParameterSchema = Joi.object({
     searchParameter: Joi.string().required()
-};
+});
 
 // Search for a user by name
 // REQ: searchParameter: The string to search for
@@ -14,7 +14,7 @@ exports.userSearch = (req, res) => {
     const user = req.user;
     const searchParameter = req.body.searchParameter;
 
-    const validation = Joi.validate(req.body, searchParameterSchema);
+    const validation = searchParameterSchema.validate(req.body);
     if(validation.error) {
         let err = validation.error.details[0].message;
         return res.status(400).send({message: err});

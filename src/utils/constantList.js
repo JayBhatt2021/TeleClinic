@@ -39,7 +39,7 @@ export const signInFieldErrors = error => {
         case SAME_EMAIL:
             return SAME_EMAIL_MESSAGE;
         default:
-            return NONE;
+            return '';
     }
 };
 export const SERVER_ERROR_MESSAGE = 'There was an error.';

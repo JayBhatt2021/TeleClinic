@@ -3,7 +3,7 @@ const firebaseConfig = require('./config');
 firebase.initializeApp(firebaseConfig);
 
 const admin = require("firebase-admin");
-const serviceAccount = require("../serviceAccountKey.json");
+const serviceAccount = require("../teleclinic-39fd7ff1d25330.json");
 admin.initializeApp({
     credential: admin.credential.cert(serviceAccount)
 });

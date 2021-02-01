@@ -25,7 +25,7 @@ const SignInPage = ({signInComponent, isFetching, userId}) => {
     }
 
     const currentComponent = () => {
-        if(isFetching === true){
+        if(isFetching === true) {
             return <Spinner/>
         } else if (signInComponent === SIGN_IN) {
             return <SignInCard/>

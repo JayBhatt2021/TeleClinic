@@ -24,7 +24,6 @@ import {
     PASSWORDS_DO_NOT_MATCH,
     MINIMUM_PASSWORD_LENGTH,
     INVALID_PASSWORD_LENGTH,
-    NONE,
     INVALID_CHARACTERS,
     LETTERS_ONLY,
     SAME_EMAIL
@@ -37,7 +36,7 @@ import {
 } from "../../../utils/regularExpressions";
 
 const defaultState = {
-    signInComponent: '',
+    signInComponent: SIGN_IN,
     firstName: '',
     lastName: '',
     userType: '',
@@ -45,10 +44,10 @@ const defaultState = {
     password: '',
     confirmedPassword: '',
     errors: {
-        firstName: NONE,
-        lastName: NONE,
-        email: NONE,
-        password: NONE
+        firstName: false,
+        lastName: false,
+        email: false,
+        password: false
     },
     showErrors: false,
     logInError: '',
@@ -172,7 +171,7 @@ function getPasswordErrors(state, password, confirmedPassword, checkConfirmedPas
     } else {
         return {
             ...state.errors,
-            password: NONE
+            password: false
         };
     }
 }

@@ -50,7 +50,6 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
         }
     }
 
-
     return (
         <div className={classes.paper}>
             <Typography component="h1" variant="h5">
@@ -88,7 +87,7 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
                 <p className={errors.password === false
                 || errors.password === EMPTY_REQUIRED_FIELD
                 || (errors.password === WEAK_PASSWORD && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
-                || (errors.password === WEAK_PASSWORD && errors.fName !== EMPTY_REQUIRED_FIELD && logInError === "")
+                || (errors.password === WEAK_PASSWORD && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
                     ? 'hidden' : 'error-message'}> Invalid Password</p>
                 <p className={logInError === '' ? 'hidden' : 'error-message'}>
                     {logInError}
@@ -104,11 +103,9 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
                     Sign In
                 </Button>
                 <Grid container>
-                    <Grid item>
-                        <Link href="#" variant="body2" onClick={showSignUpScreen}>
-                            {"Don't have an account? Sign up here!"}
-                        </Link>
-                    </Grid>
+                    <Link href="#" variant="body2" onClick={showSignUpScreen}>
+                        {"Don't have an account? Sign up here!"}
+                    </Link>
                 </Grid>
             </form>
         </div>

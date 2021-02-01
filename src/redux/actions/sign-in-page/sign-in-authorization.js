@@ -1,6 +1,5 @@
 import fetchData from "../../../utils/api";
 import {setCurrentUser} from "../user/current-user";
-import {NONE} from "../../../utils/constantList";
 import {
     getErrors,
     getFirstName,
@@ -160,7 +159,7 @@ function signIn() {
         const state = getState();
         const errors = getErrors(state);
 
-        if (errors.email !== NONE || errors.password !== NONE) {
+        if (errors.email || errors.password) {
             dispatch(showErrors(true));
             return dispatch(setIsFetchingSignIn(false));
         }
@@ -199,7 +198,7 @@ function signUp() {
         const errors = getErrors(state);
         let hasErrors = false;
         Object.values(errors).forEach(error => {
-            if (error !== NONE) {
+            if (error !== false) {
                 hasErrors = true;
             }
         });
