@@ -1,4 +1,14 @@
 import fetchData from "../../../utils/api";
+import {setCurrentUser} from "../user/current-user";
+import {NONE} from "../../../utils/constantList";
+import {
+    getErrors,
+    getFirstName,
+    getLastName,
+    getPassword,
+    getEmail,
+    getUserType
+} from "../../selectors/sign-in-page/sign-in-authorization";
 
 const SET_IS_FETCHING_SIGN_IN = 'SET_IS_FETCHING_SIGN_IN';
 const setIsFetchingSignIn = value => {
@@ -30,6 +40,13 @@ const showSignUpScreen = () => {
     }
 };
 
+const SHOW_UNVERIFIED_EMAIL = 'SHOW_UNVERIFIED_EMAIL';
+const showUnverifiedEmail = () => {
+    return {
+        type: SHOW_UNVERIFIED_EMAIL
+    }
+};
+
 const SET_FIRST_NAME = 'SET_FIRST_NAME';
 const setFirstName = firstName => {
     return {
@@ -54,11 +71,11 @@ const setUserType = type => {
     }
 };
 
-const SET_USERNAME = 'SET_USERNAME';
-const setUsername = username => {
+const SET_EMAIL = 'SET_EMAIL';
+const setEmail = email => {
     return {
-        type: SET_USERNAME,
-        payload: username
+        type: SET_EMAIL,
+        payload: email
     }
 };
 
@@ -102,56 +119,146 @@ const showLogInError = error => {
     }
 };
 
+const SET_SAME_EMAIL_ERROR = 'SET_SAME_EMAIL_ERROR';
+const setSameEmailError = value => {
+    return {
+        type: SET_SAME_EMAIL_ERROR,
+        payload: value
+    }
+};
+
 function getUserInfo() {
-    // return dispatch => {
-    //     const route = '/get-user';
-    //
-    //     const params = {};
-    //
-    //     return fetchData(route, params)
-    //         .then(res => dispatch(setCurrentUser(res)))
-    //         .then(() => dispatch(setIsCheckingForToken(false)))
-    //         .then(() => dispatch(setIsFetchingSignIn(false)))
-    // }
+    return dispatch => {
+        const route = '/get-user';
+
+        const params = {};
+
+        return fetchData(route, params)
+            .then(res => dispatch(setCurrentUser(res)))
+            .then(() => dispatch(setIsCheckingForToken(false)))
+            .then(() => dispatch(setIsFetchingSignIn(false)))
+    }
 }
 
 function checkToken() {
-    // return dispatch => {
-    //     dispatch(setIsCheckingForToken(true));
-    //     const token = localStorage.getItem("idToken");
-    //     const tokenExists = (token !== undefined && token !== null && token !== '');
-    //     if (tokenExists) {
-    //         return dispatch(getUserInfo())
-    //     } else {
-    //         return dispatch(setIsCheckingForToken(false))
-    //     }
-    // }
+    return dispatch => {
+        dispatch(setIsCheckingForToken(true));
+        const token = localStorage.getItem("idToken");
+        const tokenExists = (token !== undefined && token !== null && token !== '');
+        if (tokenExists) {
+            return dispatch(getUserInfo())
+        } else {
+            return dispatch(setIsCheckingForToken(false))
+        }
+    }
 }
 
 function signIn() {
+    return (dispatch, getState) => {
+        dispatch(setIsFetchingSignIn(true));
+        dispatch(validateInputFields(false));
+        const state = getState();
+        const errors = getErrors(state);
 
+        if (errors.email !== NONE || errors.password !== NONE) {
+            dispatch(showErrors(true));
+            return dispatch(setIsFetchingSignIn(false));
+        }
+
+        const params = {
+            email: getEmail(state),
+            password: getPassword(state)
+        };
+
+        const route = '/sign-in';
+
+        dispatch(setPassword(""));
+
+        return fetchData(route, params)
+            .then(res => {
+                localStorage.setItem('idToken', `Bearer ${res.idToken}`);
+                dispatch(getUserInfo());
+            })
+            .catch(err => {
+                dispatch(setIsFetchingSignIn(false));
+                if (err.status === 401) {
+                    return dispatch(showLogInError('Unauthorized Access'))
+                } else if (err.status === 403) {
+                    return dispatch(showLogInError('Invalid Email or Password'))
+                } else {
+                    return dispatch(showLogInError('There was an error signing in. Please try again.'))
+                }
+            })
+    };
 }
 
 function signUp() {
+    return (dispatch, getState) => {
+        dispatch(validateInputFields(true));
+        const state = getState();
+        const errors = getErrors(state);
+        let hasErrors = false;
+        Object.values(errors).forEach(error => {
+            if (error !== NONE) {
+                hasErrors = true;
+            }
+        });
 
+        if (hasErrors) {
+            return dispatch(showErrors(true));
+        } else {
+            dispatch(showErrors(false));
+            dispatch(setIsFetchingSignIn(true));
+            const params = {
+                firstName: getFirstName(state),
+                lastName: getLastName(state),
+                email: getEmail(state),
+                password: getPassword(state),
+                userType: getUserType(state)
+            };
+
+            const route = '/sign-up';
+
+            dispatch(setPassword(""));
+            dispatch(setConfirmedPassword(""));
+
+            return fetchData(route, params)
+                .then(res => {
+                    if (res.message === 'Email exists.')
+                    {
+                        dispatch(setSameEmailError(true))
+                        dispatch(showErrors(true))
+                    }
+                    else
+                    {
+                        dispatch(showUnverifiedEmail())
+                    }
+                })
+                .then(() => dispatch(setIsFetchingSignIn(false)))
+                .catch(err => {
+                    dispatch(setIsFetchingSignIn(false));
+                });
+        }
+    }
 }
 
 function signOut() {
-    // return dispatch => {
-    //     dispatch(setIsCheckingForToken(true));
-    //     dispatch(setIsFetchingSignIn(true));
-    //
-    //     localStorage.removeItem("idToken");
-    //
-    //     dispatch(setCurrentUser({
-    //         userId: '',
-    //         userName: ''
-    //     }));
-    //
-    //     dispatch(showLogInError('NONE'));
-    //     dispatch(setIsFetchingSignIn(false));
-    //     dispatch(setIsCheckingForToken(false))
-    // };
+    return dispatch => {
+        dispatch(setIsCheckingForToken(true));
+        dispatch(setIsFetchingSignIn(true));
+
+        localStorage.removeItem("idToken");
+
+        dispatch(setCurrentUser({
+            userId: '',
+            userFirstName: '',
+            userLastName: ''
+        }));
+
+        dispatch(showLogInError('NONE'));
+        dispatch(setIsFetchingSignIn(false));
+        dispatch(setIsCheckingForToken(false))
+    };
 }
 
 export {
@@ -163,14 +270,16 @@ export {
     showSignInScreen,
     SHOW_SIGN_UP_SCREEN,
     showSignUpScreen,
+    SHOW_UNVERIFIED_EMAIL,
+    showUnverifiedEmail,
     SET_FIRST_NAME,
     setFirstName,
     SET_LAST_NAME,
     setLastName,
     SET_USER_TYPE,
     setUserType,
-    SET_USERNAME,
-    setUsername,
+    SET_EMAIL,
+    setEmail,
     SET_PASSWORD,
     setPassword,
     SET_CONFIRMED_PASSWORD,
@@ -181,6 +290,8 @@ export {
     showErrors,
     SHOW_LOG_IN_ERROR,
     showLogInError,
+    SET_SAME_EMAIL_ERROR,
+    setSameEmailError,
     getUserInfo,
     checkToken,
     signIn,

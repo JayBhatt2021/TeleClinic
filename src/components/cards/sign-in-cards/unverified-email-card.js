@@ -9,7 +9,7 @@ import React from 'react';
 import {showSignInScreen} from '../../../redux/actions/sign-in-page/sign-in-authorization';
 import {useStyles} from './use-styles';
 
-const FinishSignUpCard = ({showSignInScreen}) => {
+const UnverifiedEmailCard = ({showSignInScreen}) => {
     const classes = useStyles();
 
     return (
@@ -19,7 +19,7 @@ const FinishSignUpCard = ({showSignInScreen}) => {
             </Typography>
             <br/>
             <Typography component="h3">
-                You have successfully signed up with TeleClinic!
+                Check your email for steps to verifying your TeleClinic account.
             </Typography>
             <Grid item xs>
                 <Link href="#" variant="body2" onClick={showSignInScreen}>
@@ -30,7 +30,7 @@ const FinishSignUpCard = ({showSignInScreen}) => {
     )
 };
 
-FinishSignUpCard.propTypes = {
+UnverifiedEmailCard.propTypes = {
     showSignInScreen: PropTypes.func.isRequired,
 };
 
@@ -38,4 +38,4 @@ const mapDispatchToProps = dispatch => ({
     showSignInScreen: () => dispatch(showSignInScreen())
 });
 
-export default connect(null, mapDispatchToProps)(FinishSignUpCard);
+export default connect(null, mapDispatchToProps)(UnverifiedEmailCard);

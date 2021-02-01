@@ -34,21 +34,20 @@ class App extends React.Component {
       return <Spinner/>
     }
 
-    // const token = localStorage.getItem("idToken");
-    // const tokenExists = (token !== undefined && token !== null && token !== '');
+    const token = localStorage.getItem("idToken");
+    const tokenExists = (token !== undefined && token !== null && token !== '');
 
     // If a token is not stored, then only return the homepage. Otherwise, return the rest of the app.
-    // if (!tokenExists) {
-    //   return (
-    //       <Router>
-    //         <div>
-    //           <Redirect to='/'/>
-    //           <Route path="/" exact component={HomePage}/>
-    //         </div>
-    //       </Router>
-    //
-    //   )
-    // }
+    if (!tokenExists) {
+      return (
+          <Router>
+            <div>
+              <Redirect to='/'/>
+              <Route path="/" exact component={SignInPage}/>
+            </div>
+          </Router>
+      )
+    }
 
     return (
         <Router>

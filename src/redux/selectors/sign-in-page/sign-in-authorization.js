@@ -6,7 +6,7 @@ const getLastName = state => state.signInPage.signInAuthorization.lastName;
 
 const getUserType = state => state.signInPage.signInAuthorization.userType;
 
-const getUsername = state => state.signInPage.signInAuthorization.username;
+const getEmail = state => state.signInPage.signInAuthorization.email;
 
 const getPassword = state => state.signInPage.signInAuthorization.password;
 
@@ -27,7 +27,7 @@ export {
     getFirstName,
     getLastName,
     getUserType,
-    getUsername,
+    getEmail,
     getPassword,
     getConfirmedPassword,
     getErrors,

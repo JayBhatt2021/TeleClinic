@@ -1,5 +1,5 @@
 export default function fetchData(request, parameters) {
-    return fetch('https://' + request, //todo: change the url in order to fetch data
+    return fetch('https://us-central1-teleclinic-8aa6b.cloudfunctions.net/api' + request,
         {
             headers: {
                 'Content-Type': 'application/json',

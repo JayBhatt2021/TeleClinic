@@ -6,6 +6,7 @@ export const ASTERISK_MARKS_REQUIRED_FIELD = '* indicates a required field.';
 // Sign-In Page
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_UP = 'SIGN_UP';
+export const UNVERIFIED_EMAIL = 'UNVERIFIED_EMAIL';
 export const PATIENT_TYPE = 'PATIENT_TYPE';
 export const DOCTOR_TYPE = 'DOCTOR_TYPE';
 export const ADMINISTRATOR_TYPE = 'ADMINISTRATOR_TYPE';
@@ -20,6 +21,7 @@ export const INVALID_PASSWORD_LENGTH = 'INVALID_PASSWORD_LENGTH';
 export const EMPTY_REQUIRED_FIELD = 'EMPTY_REQUIRED_FIELD';
 export const INVALID_CHARACTERS = 'INVALID_CHARACTERS';
 export const LETTERS_ONLY = 'LETTERS_ONLY';
+export const SAME_EMAIL = 'SAME_EMAIL';
 
 // Error Messages
 export const signInFieldErrors = error => {
@@ -34,15 +36,18 @@ export const signInFieldErrors = error => {
             return INVALID_PASSWORD_LENGTH_MESSAGE;
         case WEAK_PASSWORD:
             return WEAK_PASSWORD_MESSAGE;
+        case SAME_EMAIL:
+            return SAME_EMAIL_MESSAGE;
         default:
             return NONE;
     }
 };
 export const SERVER_ERROR_MESSAGE = 'There was an error.';
-export const INVALID_USERNAME_OR_PASSWORD_MESSAGE = 'Invalid username or password';
+export const INVALID_EMAIL_OR_PASSWORD_MESSAGE = 'Invalid email or password';
 export const INVALID_CHARACTER_MESSAGE = 'The following characters are not allowed: ^ # % & * : < > ? / { | }';
 export const PASSWORDS_DO_NOT_MATCH_MESSAGE = 'The passwords do not match.';
 export const LETTERS_ONLY_MESSAGE = 'Only uppercase and lowercase letters are allowed.';
 export const INVALID_PASSWORD_LENGTH_MESSAGE = 'Password must be at least ' + MINIMUM_PASSWORD_LENGTH + ' characters.';
 export const WEAK_PASSWORD_MESSAGE = 'Requirements: The password must contain at least one lowercase letter, one ' +
     'uppercase letter, one number, one special character, and must be eight characters or longer.';
+export const SAME_EMAIL_MESSAGE = 'This email is already in use.';

@@ -5,8 +5,7 @@ import {
     Grid,
     Link,
     Button,
-    TextField,
-    makeStyles,
+    TextField
 } from '@material-ui/core';
 import React from 'react';
 import './_style.css';
@@ -14,7 +13,7 @@ import {
     showSignInScreen,
     setFirstName,
     setLastName,
-    setUsername,
+    setEmail,
     setPassword,
     setConfirmedPassword,
     signUp
@@ -22,7 +21,7 @@ import {
 import {
     getFirstName,
     getLastName,
-    getUsername,
+    getEmail,
     getErrors,
     getIsShowingErrors
 } from '../../../redux/selectors/sign-in-page/sign-in-authorization';
@@ -32,35 +31,11 @@ import {
     EMPTY_REQUIRED_FIELD,
     signInFieldErrors
 } from '../../../utils/constantList';
-
-const useStyles = makeStyles(theme => ({
-    root: {
-        height: '100vh',
-    },
-    image: {
-        backgroundImage: 'url(https://1v1ulb40yc772j8uk01kozpe-wpengine.netdna-ssl.com/wp-content/uploads/2018/06/Kennesaw-Wellstar-Health-_-Human-Services-1.jpg)',
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-    },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+import {useStyles} from './use-styles';
 
 const SignUpCard = ({
-                        firstName, lastName, username, errors, showErrors, showSignInScreen, setFirstName, setLastName,
-                        setUsername, setPassword, setConfirmedPassword, signUp
+                        firstName, lastName, email, errors, showErrors, showSignInScreen, setFirstName, setLastName,
+                        setEmail, setPassword, setConfirmedPassword, signUp
                     }) =>
 {
     const classes = useStyles();
@@ -120,19 +95,19 @@ const SignUpCard = ({
                 </Grid>
                 <UserTypeRadioButtons/>
                 <TextField
-                    error={showError(errors.username)}
+                    error={showError(errors.email)}
                     variant="outlined"
                     margin="normal"
                     required
                     fullWidth
-                    id="username"
-                    label="Username"
-                    name="username"
-                    defaultValue={username}
-                    onBlur={e => setUsername(e.target.value.trim())}
+                    id="email"
+                    label="Email"
+                    name="email"
+                    defaultValue={email}
+                    onBlur={e => setEmail(e.target.value.trim())}
                     autoComplete="email"
                 />
-                <p className={'error-message'}>{signInFieldErrors(errors.username)}</p>
+                <p className={'error-message'}>{signInFieldErrors(errors.email)}</p>
                 <TextField
                     error={showError(errors.password)}
                     variant="outlined"
@@ -183,13 +158,13 @@ const SignUpCard = ({
 SignUpCard.propTypes = {
     firstName: PropTypes.string.isRequired,
     lastName: PropTypes.string.isRequired,
-    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
     errors: PropTypes.object.isRequired,
     showErrors: PropTypes.bool.isRequired,
     showSignInScreen: PropTypes.func.isRequired,
     setFirstName: PropTypes.func.isRequired,
     setLastName: PropTypes.func.isRequired,
-    setUsername: PropTypes.func.isRequired,
+    setEmail: PropTypes.func.isRequired,
     setPassword: PropTypes.func.isRequired,
     setConfirmedPassword: PropTypes.func.isRequired,
     signUp: PropTypes.func.isRequired
@@ -198,7 +173,7 @@ SignUpCard.propTypes = {
 const mapStateToProps = state => ({
     firstName: getFirstName(state),
     lastName: getLastName(state),
-    username: getUsername(state),
+    email: getEmail(state),
     errors: getErrors(state),
     showErrors: getIsShowingErrors(state)
 });
@@ -207,7 +182,7 @@ const mapDispatchToProps = dispatch => ({
     showSignInScreen: () => dispatch(showSignInScreen()),
     setFirstName: firstName => dispatch(setFirstName(firstName)),
     setLastName: lastName => dispatch(setLastName(lastName)),
-    setUsername: username => dispatch(setUsername(username)),
+    setEmail: email => dispatch(setEmail(email)),
     setPassword: password => dispatch(setPassword(password)),
     setConfirmedPassword: confirmedPassword => dispatch(setConfirmedPassword(confirmedPassword)),
     signUp: () => dispatch(signUp())
