@@ -24,14 +24,12 @@ import {
     PASSWORDS_DO_NOT_MATCH,
     MINIMUM_PASSWORD_LENGTH,
     INVALID_PASSWORD_LENGTH,
-    INVALID_CHARACTERS,
     LETTERS_ONLY,
     SAME_EMAIL
 } from "../../../utils/constantList";
 import {
     hasWeakPassword,
     isEmptyOrSpaces,
-    hasInvalidCharacters,
     hasLettersOnly
 } from "../../../utils/regularExpressions";
 
@@ -180,8 +178,6 @@ function getPasswordErrors(state, password, confirmedPassword, checkConfirmedPas
 function getError(value, mustHaveLettersOnly = false) {
     if (isEmptyOrSpaces(value)) {
         return EMPTY_REQUIRED_FIELD
-    } else if (hasInvalidCharacters(value)) {
-        return INVALID_CHARACTERS
     } else if (mustHaveLettersOnly && !hasLettersOnly(value)) {
         return LETTERS_ONLY
     } else {

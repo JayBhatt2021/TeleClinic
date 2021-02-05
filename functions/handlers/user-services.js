@@ -3,7 +3,7 @@ const {database, admin} = require('../util/admin');
 const config = require('../util/config');
 const firebase = require('firebase');
 
-const strongPasswordRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+const strongPasswordRegex = new RegExp("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
 
 const signUpSchema = Joi.object({
     firstName: Joi.string().required(),

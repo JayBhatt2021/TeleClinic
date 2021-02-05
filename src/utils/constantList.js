@@ -19,15 +19,12 @@ export const INVALID_PASSWORD_LENGTH = 'INVALID_PASSWORD_LENGTH';
 
 // Other Text Field (Usernames, First Names, etc.) Errors
 export const EMPTY_REQUIRED_FIELD = 'EMPTY_REQUIRED_FIELD';
-export const INVALID_CHARACTERS = 'INVALID_CHARACTERS';
 export const LETTERS_ONLY = 'LETTERS_ONLY';
 export const SAME_EMAIL = 'SAME_EMAIL';
 
 // Error Messages
 export const signInFieldErrors = error => {
     switch (error) {
-        case INVALID_CHARACTERS:
-            return INVALID_CHARACTER_MESSAGE;
         case PASSWORDS_DO_NOT_MATCH:
             return PASSWORDS_DO_NOT_MATCH_MESSAGE;
         case LETTERS_ONLY:
@@ -44,10 +41,9 @@ export const signInFieldErrors = error => {
 };
 export const SERVER_ERROR_MESSAGE = 'There was an error.';
 export const INVALID_EMAIL_OR_PASSWORD_MESSAGE = 'Invalid email or password';
-export const INVALID_CHARACTER_MESSAGE = 'The following characters are not allowed: ^ # % & * : < > ? / { | }';
 export const PASSWORDS_DO_NOT_MATCH_MESSAGE = 'The passwords do not match.';
 export const LETTERS_ONLY_MESSAGE = 'Only uppercase and lowercase letters are allowed.';
 export const INVALID_PASSWORD_LENGTH_MESSAGE = 'Password must be at least ' + MINIMUM_PASSWORD_LENGTH + ' characters.';
 export const WEAK_PASSWORD_MESSAGE = 'Requirements: The password must contain at least one lowercase letter, one ' +
-    'uppercase letter, one number, one special character, and must be eight characters or longer.';
+    'uppercase letter, one number, and must be eight characters or longer.';
 export const SAME_EMAIL_MESSAGE = 'This email is already in use.';

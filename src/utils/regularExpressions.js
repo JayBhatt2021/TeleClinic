@@ -1,9 +1,9 @@
 /*
-  A strong password must have at least 1 lowercase letter, 1 uppercase letter, 1 number, 1 special character,
-  and must be eight characters in length or longer.
+  A strong password must have at least 1 lowercase letter, 1 uppercase letter, 1 number, and must be eight
+  characters in length or longer.
 */
 export const hasWeakPassword = str => {
-    return !RegExp('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})').test(str)
+    return !RegExp('^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$').test(str)
 };
 
 /*
@@ -11,13 +11,6 @@ export const hasWeakPassword = str => {
 */
 export const isEmptyOrSpaces = str =>{
     return str === null || str.match(/^ *$/) !== null;
-};
-
-/*
-  Returns true if string has the following characters: ^ # % & * : < > ? / { | }
-*/
-export const hasInvalidCharacters = str => {
-    return !RegExp('^[^#%&*:<>?/{|}]+$').test(str)
 };
 
 /*
