@@ -5,7 +5,7 @@ import {
     Grid,
     Link,
     Button,
-    TextField
+    TextField, CardMedia
 } from '@material-ui/core';
 import React from 'react';
 import './_style.css';
@@ -32,6 +32,7 @@ import {
     signInFieldErrors
 } from '../../../utils/constantList';
 import {useStyles} from './use-styles';
+import Logo from "../../../utils/images/TeleClinicLogo.png";
 
 const SignUpCard = ({
                         firstName, lastName, email, errors, showErrors, showSignInScreen, setFirstName, setLastName,
@@ -54,7 +55,11 @@ const SignUpCard = ({
     };
 
     return (
+
         <div className={classes.paper}>
+            <CardMedia>
+                <img src={Logo} alt={"TeleClinic Logo"}/>
+            </CardMedia>
             <Typography component="h1" variant="h5">
                 Sign up
             </Typography>
@@ -143,12 +148,10 @@ const SignUpCard = ({
                 >
                     Sign Up
                 </Button>
-                <Grid container>
-                    <Grid item>
-                        <Link href="#" variant="body2" onClick={showSignInScreen}>
-                            {"Already have an account? Sign in here!"}
-                        </Link>
-                    </Grid>
+                <Grid container style={{justifyContent: 'center'}}>
+                    <Link href="#" variant="body2" onClick={showSignInScreen}>
+                        {"Already have an account? Sign in here!"}
+                    </Link>
                 </Grid>
             </form>
         </div>

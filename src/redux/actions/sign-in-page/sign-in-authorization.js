@@ -171,7 +171,7 @@ function signIn() {
 
         const route = '/sign-in';
 
-        dispatch(setPassword(""));
+        dispatch(setPassword(''));
 
         return fetchData(route, params)
             .then(res => {
@@ -181,7 +181,7 @@ function signIn() {
             .catch(err => {
                 dispatch(setIsFetchingSignIn(false));
                 if (err.status === 401) {
-                    return dispatch(showLogInError('Unauthorized Access'))
+                    return dispatch(showUnverifiedEmail())
                 } else if (err.status === 403) {
                     return dispatch(showLogInError('Invalid Email or Password'))
                 } else {
@@ -218,8 +218,8 @@ function signUp() {
 
             const route = '/sign-up';
 
-            dispatch(setPassword(""));
-            dispatch(setConfirmedPassword(""));
+            dispatch(setPassword(''));
+            dispatch(setConfirmedPassword(''));
 
             return fetchData(route, params)
                 .then(res => {

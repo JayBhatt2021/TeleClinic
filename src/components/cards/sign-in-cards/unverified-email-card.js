@@ -21,6 +21,7 @@ const UnverifiedEmailCard = ({showSignInScreen}) => {
             <Typography component="h3">
                 Check your email for steps to verifying your TeleClinic account.
             </Typography>
+            <br/>
             <Grid item xs>
                 <Link href="#" variant="body2" onClick={showSignInScreen}>
                     Click here to return to the sign-in screen.

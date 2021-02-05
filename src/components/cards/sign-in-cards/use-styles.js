@@ -1,13 +1,14 @@
 import {
     makeStyles,
 } from "@material-ui/core";
+import Image from "../../../utils/images/SignInPage.jpg";
 
 export const useStyles = makeStyles(theme => ({
     root: {
         height: '100vh',
     },
     image: {
-        backgroundImage: 'url(https://1v1ulb40yc772j8uk01kozpe-wpengine.netdna-ssl.com/wp-content/uploads/2018/06/Kennesaw-Wellstar-Health-_-Human-Services-1.jpg)',
+        backgroundImage: `url(${Image})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',

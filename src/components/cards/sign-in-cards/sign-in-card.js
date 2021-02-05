@@ -5,7 +5,8 @@ import {
     Grid,
     Link,
     Button,
-    TextField
+    TextField,
+    CardMedia
 } from '@material-ui/core';
 import React from 'react';
 import {
@@ -27,6 +28,7 @@ import {
     signInFieldErrors
 } from '../../../utils/constantList';
 import {useStyles} from './use-styles';
+import Logo from '../../../utils/images/TeleClinicLogo.png';
 
 const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, setEmail, setPassword, signIn}) =>
 {
@@ -43,7 +45,7 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
     };
     const getMessage = error => showErrors ? signInFieldErrors(error) : '';
 
-    function signInOnEnter(e) {
+    const signInOnEnter = e => {
         if (e.which === 13) {
             setPassword(e.target.value.trim());
             signIn();
@@ -52,6 +54,9 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
 
     return (
         <div className={classes.paper}>
+            <CardMedia>
+                <img src={Logo} alt={"TeleClinic Logo"}/>
+            </CardMedia>
             <Typography component="h1" variant="h5">
                 Sign in
             </Typography>
@@ -88,7 +93,7 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
                 || errors.password === EMPTY_REQUIRED_FIELD
                 || (errors.password === WEAK_PASSWORD && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
                 || (errors.password === WEAK_PASSWORD && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
-                    ? 'hidden' : 'error-message'}> Invalid Password</p>
+                    ? 'hidden' : 'error-message'}>Invalid Password</p>
                 <p className={logInError === '' ? 'hidden' : 'error-message'}>
                     {logInError}
                 </p>
@@ -102,7 +107,7 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
                 >
                     Sign In
                 </Button>
-                <Grid container>
+                <Grid container style={{justifyContent: 'center'}}>
                     <Link href="#" variant="body2" onClick={showSignUpScreen}>
                         {"Don't have an account? Sign up here!"}
                     </Link>
