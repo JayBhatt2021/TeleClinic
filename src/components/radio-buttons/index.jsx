@@ -9,10 +9,13 @@ import {
 import React from 'react';
 import {PATIENT_TYPE, DOCTOR_TYPE, ADMINISTRATOR_TYPE} from '../../utils/constantList';
 import {setUserType} from '../../redux/actions/sign-in-page/sign-in-authorization';
-import {getErrors, getIsShowingErrors} from '../../redux/selectors/sign-in-page/sign-in-authorization';
+import {getIsShowingErrors, getUserType} from '../../redux/selectors/sign-in-page/sign-in-authorization';
+import {indexStyles} from "./index-styles";
 
-const UserTypeRadioButtons = ({setUserType, errors, isShowingErrors}) => {
-    const showError = isShowingErrors && errors.userType !== false;
+const UserTypeRadioButtons = ({setUserType, getUserType, isShowingErrors}) => {
+    const classes = indexStyles();
+
+    const showError = isShowingErrors && getUserType === '';
 
     return (
         <RadioGroup>
@@ -21,13 +24,27 @@ const UserTypeRadioButtons = ({setUserType, errors, isShowingErrors}) => {
                 direction="row"
                 justify="space-evenly"
                 alignItems="center">
-                <p className={(showError ? 'field-error' : 'user-type')}>Affiliation* </p>
-                <FormControlLabel value='Patient' control={<Radio/>} label='Patient'
-                                  onClick={() => setUserType(PATIENT_TYPE)}/>
-                <FormControlLabel value='Doctor' control={<Radio/>} label='Doctor'
-                                  onClick={() => setUserType(DOCTOR_TYPE)}/>
-                <FormControlLabel value='Administrator' control={<Radio/>} label='Administrator'
-                                  onClick={() => setUserType(ADMINISTRATOR_TYPE)}/>
+                <p className={(showError ? classes.root : '')}>
+                    Affiliation*
+                </p>
+                <FormControlLabel value='Patient'
+                                  control={<Radio/>}
+                                  label='Patient'
+                                  onClick={() => setUserType(PATIENT_TYPE)}
+                                  className={showError ? classes.root : ''}
+                />
+                <FormControlLabel value='Doctor'
+                                  control={<Radio/>}
+                                  label='Doctor'
+                                  onClick={() => setUserType(DOCTOR_TYPE)}
+                                  className={showError ? classes.root : ''}
+                />
+                <FormControlLabel value='Administrator'
+                                  control={<Radio/>}
+                                  label='Administrator'
+                                  onClick={() => setUserType(ADMINISTRATOR_TYPE)}
+                                  className={showError ? classes.root : ''}
+                />
             </Grid>
         </RadioGroup>
     )
@@ -35,12 +52,12 @@ const UserTypeRadioButtons = ({setUserType, errors, isShowingErrors}) => {
 
 UserTypeRadioButtons.propTypes = {
     setUserType: PropTypes.func.isRequired,
-    errors: PropTypes.object.isRequired,
+    getUserType: PropTypes.string.isRequired,
     isShowingErrors: PropTypes.bool.isRequired
 };
 
 const mapStateToProps = state => ({
-    errors: getErrors(state),
+    getUserType: getUserType(state),
     isShowingErrors: getIsShowingErrors(state)
 });
 

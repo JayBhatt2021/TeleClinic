@@ -54,6 +54,13 @@ const SignUpCard = ({
         return result;
     };
 
+    const signUpOnEnter = e => {
+        if (e.which === 13) {
+            setPassword(e.target.value.trim());
+            signUp();
+        }
+    }
+
     return (
 
         <div className={classes.paper}>
@@ -136,6 +143,7 @@ const SignUpCard = ({
                     type="password"
                     id="confirmPassword"
                     onBlur={e => setConfirmedPassword(e.target.value.trim())}
+                    onKeyPress={e => signUpOnEnter(e)}
                 />
                 <p className={'error-message'}>{signInFieldErrors(errors.password)}</p>
                 <p className={'error-message'}>{showMissingFieldError()}</p>
