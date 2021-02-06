@@ -8,7 +8,7 @@ import {
   Route,
   Redirect
 } from 'react-router-dom';
-import Nav from './components/navigation-bar/index';
+import NavigationBar from './components/navigation-bar/index';
 import SignInPage from './pages/sign-in-page/sign-in-page';
 import HomePage from './pages/home-page/home-page';
 import MessagesPage from "./pages/messages-page/messages-page";
@@ -52,7 +52,7 @@ class App extends React.Component {
     return (
         <Router>
           <div>
-            <Nav/>
+            <NavigationBar/>
             <Switch>
               <Route path="/" exact component={SignInPage}/>
               <Route path="/home-page" exact component={HomePage}/>

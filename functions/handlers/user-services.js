@@ -116,19 +116,6 @@ exports.signInUser = (req, res) => {
     });
 };
 
-
-// Will sign current user out and make user token invalid
-// REQ: Authorization Header with token, if user is not signed in will send 404 response
-// RES: 200 status, no message
-exports.signOutUser = (req, res) => {
-    // let user = req.user;
-    firebase.auth().signOut().then(function () {
-        res.status(200).send({message:"Success"});
-    }).catch(err => {
-        console.error(err)
-    });
-};
-
 // Will get user information
 // REQ: Authorization Header: tokenId, user must be signed in
 // RES: userId, fullName
@@ -141,29 +128,8 @@ exports.getUser = (req, res) => {
         let data ={
             userId: user.uid,
             fullName: doc.data().fullName,
+            userType: doc.data().userType
         };
         sendResults(data);
-    })
-};
-
-// Will check to see if email already exists
-// REQ: email
-// RES: corresponding boolean value
-exports.emailLookup = (req, res) => {
-    const email = req.body.email.toString().trim();
-    let exists;
-    function sendRes() {
-        res.status(200).send({exists: exists})
-    }
-    admin.auth().getUserByEmail(email).then(userRecord => {
-        if(userRecord) {
-            exists = true;
-        }
-        sendRes();
-    }).catch(error => {
-        if (error.code === "auth/user-not-found") {
-            exists = false;
-        }
-        sendRes();
     })
 };

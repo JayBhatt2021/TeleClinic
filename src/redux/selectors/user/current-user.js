@@ -1,11 +1,11 @@
 const getUserId = state => state.user.currentUser.userId;
 
-const getUserFirstName = state => state.user.currentUser.userFirstName;
+const getFullName = state => state.user.currentUser.fullName;
 
-const getUserLastName = state => state.user.currentUser.userLastName;
+const getUserType = state => state.user.currentUser.userType;
 
 export {
     getUserId,
-    getUserFirstName,
-    getUserLastName
+    getFullName,
+    getUserType
 };

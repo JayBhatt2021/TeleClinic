@@ -250,11 +250,11 @@ function signOut() {
 
         dispatch(setCurrentUser({
             userId: '',
-            userFirstName: '',
-            userLastName: ''
+            fullName: '',
+            userType: ''
         }));
 
-        dispatch(showLogInError('NONE'));
+        dispatch(showLogInError(''));
         dispatch(setIsFetchingSignIn(false));
         dispatch(setIsCheckingForToken(false))
     };

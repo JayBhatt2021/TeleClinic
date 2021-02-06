@@ -4,8 +4,8 @@ import {
 
 const defaultState = {
     userId: '',
-    userFirstName: '',
-    userLastName: ''
+    fullName: '',
+    userType: ''
 };
 
 const currentUser = (state = defaultState, action) => {
@@ -13,8 +13,8 @@ const currentUser = (state = defaultState, action) => {
         case SET_CURRENT_USER:
             return {
                 userId: action.payload.userId,
-                userFirstName: action.payload.firstName,
-                userLastName: action.payload.lastName,
+                fullName: action.payload.fullName,
+                userType: action.payload.userType
             };
         default:
             return state;

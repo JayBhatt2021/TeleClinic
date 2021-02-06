@@ -1,19 +1,22 @@
 import React from 'react';
 import './home-page.css';
-import {Button, IconButton, makeStyles,} from "@material-ui/core";
+import {Button, Grid} from "@material-ui/core";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {signOut} from "../../redux/actions/sign-in-page/sign-in-authorization";
 
-const useStyles = makeStyles(theme => ({
-
-}));
-
 const HomePage = ({signOut}) => {
     return (
-        <nav>
-            <Button onClick={signOut}/>
-        </nav>
+        <div>
+            <Grid container spacing={3}>
+                <Grid item xs={6}>
+                    <p>Something</p>
+                </Grid>
+                <Grid item xs={6}>
+                    <button>Nothing</button>
+                </Grid>
+            </Grid>
+        </div>
     );
 };
 
