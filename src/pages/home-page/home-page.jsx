@@ -8,14 +8,7 @@ import {signOut} from "../../redux/actions/sign-in-page/sign-in-authorization";
 const HomePage = ({signOut}) => {
     return (
         <div>
-            <Grid container spacing={3}>
-                <Grid item xs={6}>
-                    <p>Something</p>
-                </Grid>
-                <Grid item xs={6}>
-                    <button>Nothing</button>
-                </Grid>
-            </Grid>
+            To be included
         </div>
     );
 };

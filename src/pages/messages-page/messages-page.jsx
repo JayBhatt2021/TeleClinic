@@ -9,7 +9,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MessagesPage = () => {
-
+    return (
+        <div>
+            To be included (Messages Page)
+        </div>
+    );
 };
 
 MessagesPage.propTypes = {

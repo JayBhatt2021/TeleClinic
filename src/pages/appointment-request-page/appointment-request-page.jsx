@@ -9,7 +9,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const AppointmentRequestPage = () => {
-
+    return (
+        <div>
+            To be included (Appointment Requests Page)
+        </div>
+    );
 };
 
 AppointmentRequestPage.propTypes = {

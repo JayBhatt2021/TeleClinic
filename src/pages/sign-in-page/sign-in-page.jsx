@@ -1,5 +1,4 @@
 import React from 'react';
-import './sign-in-page.css';
 import {
     Grid,
     Paper,

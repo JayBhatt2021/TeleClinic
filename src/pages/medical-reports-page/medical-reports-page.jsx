@@ -9,7 +9,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MedicalReportsPage = () => {
-
+    return (
+        <div>
+            To be included (Medical Reports Page)
+        </div>
+    );
 };
 
 MedicalReportsPage.propTypes = {

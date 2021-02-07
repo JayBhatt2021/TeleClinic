@@ -9,7 +9,11 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const VideoRecordingPage = () => {
-
+    return (
+        <div>
+            To be included (Video Recording Page)
+        </div>
+    );
 };
 
 VideoRecordingPage.propTypes = {
