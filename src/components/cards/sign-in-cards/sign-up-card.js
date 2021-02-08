@@ -5,7 +5,8 @@ import {
     Grid,
     Link,
     Button,
-    TextField, CardMedia
+    TextField,
+    CardMedia
 } from '@material-ui/core';
 import React from 'react';
 import './_style.css';
@@ -98,7 +99,7 @@ const SignUpCard = ({
                             required
                             id="lastName"
                             label="Last Name"
-                            onBlur={e => setLastName(e.target.value.trim())}
+                            onChange={e => setLastName(e.target.value.trim())}
                             name="lastName"
                             defaultValue={lastName}
                         />

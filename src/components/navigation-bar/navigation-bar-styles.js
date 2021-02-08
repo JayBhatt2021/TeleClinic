@@ -25,7 +25,7 @@ export const navigationBarStyles = makeStyles(theme => ({
     },
     fullNameTitle: {
         color: "white",
-        marginRight: 30
+        marginRight: 35
     },
     divider: {
         background: "white"
