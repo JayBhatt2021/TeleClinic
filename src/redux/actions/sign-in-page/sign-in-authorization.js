@@ -256,7 +256,7 @@ function signOut() {
 
         dispatch(showLogInError(''));
         dispatch(setIsFetchingSignIn(false));
-        dispatch(setIsCheckingForToken(false))
+        dispatch(setIsCheckingForToken(false));
     };
 }
 

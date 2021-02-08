@@ -82,7 +82,7 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
                     margin="normal"
                     required
                     fullWidth
-                    onBlur={e => setPassword(e.target.value.trim())}
+                    onChange={e => setPassword(e.target.value.trim())}
                     name="password"
                     label="Password"
                     type="password"

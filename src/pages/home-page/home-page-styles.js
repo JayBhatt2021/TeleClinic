@@ -1,29 +1,20 @@
 import {
     makeStyles,
 } from "@material-ui/core";
-import Image from "../../utils/images/SignInPage.jpg";
+import Image from "../../utils/images/homePageBackgroundImage.jpg";
 
 export const homePageStyles = makeStyles(theme => ({
-    root: {
-        height: '100vh',
-    },
-    image: {
+    gridContainer: {
         backgroundImage: `url(${Image})`,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
+        paddingBottom: -10
     },
-    paper: {
-        margin: theme.spacing(8, 4),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+    imageIcon: {
+        height: 250,
+        width: 250,
+        marginBottom: 20
     },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+    buttonPosition: {
+        marginTop: 20,
+        marginBottom: 20
+    }
 }));

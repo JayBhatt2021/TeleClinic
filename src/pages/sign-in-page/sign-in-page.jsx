@@ -12,15 +12,17 @@ import SignUpCard from '../../components/cards/sign-in-cards/sign-up-card';
 import UnverifiedEmailCard from "../../components/cards/sign-in-cards/unverified-email-card";
 import {SIGN_UP, SIGN_IN, UNVERIFIED_EMAIL} from "../../utils/constantList";
 import {getUserId} from "../../redux/selectors/user/current-user";
-import {Redirect} from "react-router-dom";
+import {useHistory} from "react-router-dom";
 import Spinner from "../../components/spinner";
 import {signInPageStyles} from "./sign-in-page-styles";
 
 const SignInPage = ({signInComponent, isFetching, userId}) => {
+    const history = useHistory();
     const classes = signInPageStyles();
 
     if(userId !== ''){
-        return <Redirect to='/home-page'/>
+        history.push("/home-page");
+        history.go(0);
     }
 
     const currentComponent = () => {
