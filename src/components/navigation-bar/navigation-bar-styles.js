@@ -10,8 +10,8 @@ export const navigationBarStyles = makeStyles(theme => ({
     },
     homePageTitle: {
         color: "white",
-        fontSize: 24,
-        marginLeft: 10
+        marginLeft: 10,
+        fontFamily: "Trebuchet MS"
     },
     otherPageLogo: {
         height: 75,
@@ -21,11 +21,13 @@ export const navigationBarStyles = makeStyles(theme => ({
         marginRight: "auto"
     },
     menuButton: {
-        color: "white"
+        color: "white",
+        fontFamily: "Trebuchet MS"
     },
     fullNameTitle: {
         color: "white",
-        marginRight: 35
+        marginRight: 35,
+        fontFamily: "Trebuchet MS"
     },
     divider: {
         background: "white"

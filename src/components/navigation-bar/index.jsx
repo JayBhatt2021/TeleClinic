@@ -34,43 +34,50 @@ const NavigationBar = ({fullName, signOut}) => {
                         (
                             <div className={classes.leftSide}>
                                 <IconButton
-                                    className={classes.menuButton}
                                     onClick={() => history.push("/messages")}
                                 >
-                                    Messages
+                                    <p className={classes.menuButton}>
+                                        Messages
+                                    </p>
                                 </IconButton>
                                 <IconButton
                                     className={classes.menuButton}
                                     onClick={() => history.push("/medical-reports")}
                                 >
-                                    Medical Reports
+                                    <p className={classes.menuButton}>
+                                        Medical Reports
+                                    </p>
                                 </IconButton>
                                 <IconButton
                                     className={classes.menuButton}
                                     onClick={() => history.push("/appointment-request")}
                                 >
-                                    Appointment Requests
+                                    <p className={classes.menuButton}>
+                                        Appointment Requests
+                                    </p>
                                 </IconButton>
                                 <IconButton
                                     className={classes.menuButton}
                                     onClick={() => history.push("/video-recording")}
                                 >
-                                    Video Recordings
+                                    <p className={classes.menuButton}>
+                                        Video Recordings
+                                    </p>
                                 </IconButton>
                             </div>
                         )
                             :
                         (
                             <div className={classes.leftSide}>
-                                <Typography variant="h6" className={classes.homePageTitle}>
+                                <h2 className={classes.homePageTitle}>
                                     Home Page
-                                </Typography>
+                                </h2>
                             </div>
                         )
                     }
-                <Typography variant="h6" className={classes.fullNameTitle}>
+                <h3 className={classes.fullNameTitle}>
                     Hello, {fullName}!
-                </Typography>
+                </h3>
                 <Divider orientation="vertical" flexItem={true} className={classes.divider}/>
                 <IconButton onClick={signOut} style={{marginLeft: 20}}>
                     <ExitToAppIcon className={classes.signOutButton}/>
