@@ -86,7 +86,7 @@ const SignUpCard = ({
                             id="firstName"
                             label="First Name"
                             name="firstName"
-                            onBlur={e => setFirstName(e.target.value.trim())}
+                            onChange={e => setFirstName(e.target.value.trim())}
                             defaultValue={firstName}
                         />
                         <p className={'error-color'}>{signInFieldErrors(errors.firstName)}</p>
@@ -131,7 +131,7 @@ const SignUpCard = ({
                     label="Password"
                     type="password"
                     id="password"
-                    onBlur={e => setPassword(e.target.value.trim())}
+                    onChange={e => setPassword(e.target.value.trim())}
                 />
                 <TextField
                     error={showError(errors.password)}
@@ -143,7 +143,7 @@ const SignUpCard = ({
                     label="Confirm Password"
                     type="password"
                     id="confirmPassword"
-                    onBlur={e => setConfirmedPassword(e.target.value.trim())}
+                    onChange={e => setConfirmedPassword(e.target.value.trim())}
                     onKeyPress={e => signUpOnEnter(e)}
                 />
                 <p className={'error-message'}>{signInFieldErrors(errors.password)}</p>
