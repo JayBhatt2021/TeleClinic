@@ -25,6 +25,7 @@ import {
     ASTERISK_MARKS_REQUIRED_FIELD,
     WEAK_PASSWORD,
     EMPTY_REQUIRED_FIELD,
+    INVALID_EMAIL,
     signInFieldErrors
 } from '../../../utils/constantList';
 import {useStyles} from './use-styles';
@@ -91,8 +92,10 @@ const SignInCard = ({email, errors, showErrors, logInError, showSignUpScreen, se
                 />
                 <p className={errors.password === false
                 || errors.password === EMPTY_REQUIRED_FIELD
-                || (errors.password === WEAK_PASSWORD && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
-                || (errors.password === WEAK_PASSWORD && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
+                || (errors.password === WEAK_PASSWORD && errors.email === INVALID_EMAIL
+                    && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
+                || (errors.password === WEAK_PASSWORD && errors.email !== INVALID_EMAIL
+                    && errors.firstName !== EMPTY_REQUIRED_FIELD && logInError === "")
                     ? 'hidden' : 'error-message'}>Invalid Password</p>
                 <p className={logInError === '' ? 'hidden' : 'error-message'}>
                     {logInError}

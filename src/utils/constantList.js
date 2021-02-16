@@ -20,6 +20,7 @@ export const INVALID_PASSWORD_LENGTH = 'INVALID_PASSWORD_LENGTH';
 // Other Text Field (Usernames, First Names, etc.) Errors
 export const EMPTY_REQUIRED_FIELD = 'EMPTY_REQUIRED_FIELD';
 export const LETTERS_ONLY = 'LETTERS_ONLY';
+export const INVALID_EMAIL = 'INVALID_EMAIL';
 export const SAME_EMAIL = 'SAME_EMAIL';
 
 // Error Messages
@@ -35,6 +36,8 @@ export const signInFieldErrors = error => {
             return WEAK_PASSWORD_MESSAGE;
         case SAME_EMAIL:
             return SAME_EMAIL_MESSAGE;
+        case INVALID_EMAIL:
+            return INVALID_EMAIL_MESSAGE;
         default:
             return '';
     }
@@ -46,4 +49,5 @@ export const LETTERS_ONLY_MESSAGE = 'Only uppercase and lowercase letters are al
 export const INVALID_PASSWORD_LENGTH_MESSAGE = 'Password must be at least ' + MINIMUM_PASSWORD_LENGTH + ' characters.';
 export const WEAK_PASSWORD_MESSAGE = 'Requirements: The password must contain at least one lowercase letter, one ' +
     'uppercase letter, one number, and must be eight characters or longer.';
+export const INVALID_EMAIL_MESSAGE = 'This email is invalid. Please input a valid email address.';
 export const SAME_EMAIL_MESSAGE = 'This email is already in use.';

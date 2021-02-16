@@ -17,3 +17,8 @@ export const isEmptyOrSpaces = str =>{
   Returns true if string has letters only
 */
 export const hasLettersOnly = str => RegExp(/^[A-Za-z]+$/).test(str);
+
+/*
+  Returns true if string is a valid email address (in format, not in practice)
+*/
+export const isValidEmail = str => RegExp(/^\S+@\S+\.\S+$/).test(str)

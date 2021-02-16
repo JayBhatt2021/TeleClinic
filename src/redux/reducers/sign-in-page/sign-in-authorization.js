@@ -25,12 +25,14 @@ import {
     MINIMUM_PASSWORD_LENGTH,
     INVALID_PASSWORD_LENGTH,
     LETTERS_ONLY,
+    INVALID_EMAIL,
     SAME_EMAIL
 } from "../../../utils/constantList";
 import {
     hasWeakPassword,
     isEmptyOrSpaces,
-    hasLettersOnly
+    hasLettersOnly,
+    isValidEmail
 } from "../../../utils/regularExpressions";
 
 const defaultState = {
@@ -94,7 +96,7 @@ const signInAuthorization = (state = defaultState, action) => {
                 email: action.payload,
                 errors: {
                     ...state.errors,
-                    email: getError(state.email)
+                    email: getError(state.email, true)
                 }
             };
         case SET_PASSWORD:
@@ -175,11 +177,13 @@ function getPasswordErrors(state, password, confirmedPassword, checkConfirmedPas
 }
 
 // Preliminary checks before accessing database
-function getError(value, mustHaveLettersOnly = false) {
+function getError(value, isEmail = false, mustHaveLettersOnly = false) {
     if (isEmptyOrSpaces(value)) {
         return EMPTY_REQUIRED_FIELD
     } else if (mustHaveLettersOnly && !hasLettersOnly(value)) {
         return LETTERS_ONLY
+    } else if (isEmail && !isValidEmail(value)) {
+        return INVALID_EMAIL;
     } else {
         return false;
     }
@@ -192,9 +196,9 @@ function getValidationErrors(state, checkConfirmedPassword) {
         ...state,
         errors: {
             ...updatedErrors,
-            firstName: getError(state.firstName, true),
-            lastName: getError(state.lastName, true),
-            email: state.errors.email === SAME_EMAIL ? SAME_EMAIL : getError(state.email)
+            firstName: getError(state.firstName, false, true),
+            lastName: getError(state.lastName, false, true),
+            email: state.errors.email === SAME_EMAIL ? SAME_EMAIL : getError(state.email, true)
         }
     }
 }
