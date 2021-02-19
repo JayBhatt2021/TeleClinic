@@ -12,6 +12,8 @@ const getPassword = state => state.signInPage.signInAuthorization.password;
 
 const getConfirmedPassword = state => state.signInPage.signInAuthorization.confirmedPassword;
 
+const getVerificationCode = state => state.signInPage.signInAuthorization.verificationCode;
+
 const getErrors = state => state.signInPage.signInAuthorization.errors;
 
 const getIsShowingErrors = state => state.signInPage.signInAuthorization.showErrors;
@@ -30,6 +32,7 @@ export {
     getEmail,
     getPassword,
     getConfirmedPassword,
+    getVerificationCode,
     getErrors,
     getIsShowingErrors,
     getLogInError,

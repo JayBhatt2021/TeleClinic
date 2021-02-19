@@ -17,7 +17,7 @@ import {
     setEmail,
     setPassword,
     setConfirmedPassword,
-    signUp
+    regularOrSpecialSignUp
 } from '../../../redux/actions/sign-in-page/sign-in-authorization';
 import {
     getFirstName,
@@ -197,7 +197,7 @@ const mapDispatchToProps = dispatch => ({
     setEmail: email => dispatch(setEmail(email)),
     setPassword: password => dispatch(setPassword(password)),
     setConfirmedPassword: confirmedPassword => dispatch(setConfirmedPassword(confirmedPassword)),
-    signUp: () => dispatch(signUp())
+    signUp: () => dispatch(regularOrSpecialSignUp())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SignUpCard);

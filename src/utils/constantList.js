@@ -7,6 +7,7 @@ export const ASTERISK_MARKS_REQUIRED_FIELD = '* indicates a required field.';
 export const SIGN_IN = 'SIGN_IN';
 export const SIGN_UP = 'SIGN_UP';
 export const UNVERIFIED_EMAIL = 'UNVERIFIED_EMAIL';
+export const VERIFICATION_CODE = 'VERIFICATION_CODE';
 export const PATIENT_TYPE = 'PATIENT_TYPE';
 export const DOCTOR_TYPE = 'DOCTOR_TYPE';
 export const ADMINISTRATOR_TYPE = 'ADMINISTRATOR_TYPE';
@@ -22,6 +23,7 @@ export const EMPTY_REQUIRED_FIELD = 'EMPTY_REQUIRED_FIELD';
 export const LETTERS_ONLY = 'LETTERS_ONLY';
 export const INVALID_EMAIL = 'INVALID_EMAIL';
 export const SAME_EMAIL = 'SAME_EMAIL';
+export const INVALID_VERIFICATION_CODE = 'INVALID_VERIFICATION_CODE';
 
 // Error Messages
 export const signInFieldErrors = error => {
@@ -38,6 +40,8 @@ export const signInFieldErrors = error => {
             return SAME_EMAIL_MESSAGE;
         case INVALID_EMAIL:
             return INVALID_EMAIL_MESSAGE;
+        case INVALID_VERIFICATION_CODE:
+            return INVALID_VERIFICATION_CODE_MESSAGE;
         default:
             return '';
     }
@@ -51,3 +55,4 @@ export const WEAK_PASSWORD_MESSAGE = 'Requirements: The password must contain at
     'uppercase letter, one number, and must be eight characters or longer.';
 export const INVALID_EMAIL_MESSAGE = 'This email is invalid. Please input a valid email address.';
 export const SAME_EMAIL_MESSAGE = 'This email is already in use.';
+export const INVALID_VERIFICATION_CODE_MESSAGE = 'This verification code is incorrect. Please try again.';

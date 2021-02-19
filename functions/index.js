@@ -7,10 +7,11 @@ const router = express();
 router.use(cors({origin:true}));
 
 // Assignment of handlers to variables
-const {signUpUser, signInUser, getUser} = require("./handlers/user-services");
+const {verifyCode, signUpUser, signInUser, getUser} = require("./handlers/user-services");
 const {userSearch} = require("./handlers/user-search");
 
 //User Services Routes
+router.post("/verify-code", verifyCode);
 router.post("/sign-up", signUpUser);
 router.post("/sign-in", signInUser);
 router.post("/get-user", FBAuth, getUser);

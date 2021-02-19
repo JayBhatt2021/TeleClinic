@@ -18,6 +18,22 @@ const signInSchema = Joi.object({
     password: Joi.string().regex(strongPasswordRegex, 'password').required(),
 });
 
+// Search for the verification code
+// REQ: None
+// RES: The document name (aka the verification code)
+exports.verifyCode = (req, res) => {
+    function returnVerificationCode(documentName) {
+        res.status(200).send(documentName);
+    }
+
+    database.collection("verificationCode").doc("code").get().then(doc => {
+        let data ={
+            verificationCode: doc.data().verificationCode,
+        };
+        returnVerificationCode(data);
+    })
+};
+
 // Req requires: firstName, lastName, email, password, userType
 // Res returns on success: Status 200, 'User added successfully.'
 // Res returns on fail: Status 400, bad request | Status 500, why sign up failed message with firebase

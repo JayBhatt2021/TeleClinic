@@ -2,23 +2,27 @@ import {
     SHOW_SIGN_IN_SCREEN,
     SHOW_SIGN_UP_SCREEN,
     SHOW_UNVERIFIED_EMAIL,
+    SHOW_VERIFICATION_CODE,
     SET_FIRST_NAME,
     SET_LAST_NAME,
     SET_USER_TYPE,
     SET_EMAIL,
     SET_PASSWORD,
     SET_CONFIRMED_PASSWORD,
+    SET_VERIFICATION_CODE,
     SHOW_ERRORS,
     SHOW_LOG_IN_ERROR,
     SET_IS_FETCHING_SIGN_IN,
     SET_IS_CHECKING_FOR_TOKEN,
     VALIDATE_INPUT_FIELDS,
-    SET_SAME_EMAIL_ERROR
+    SET_SAME_EMAIL_ERROR,
+    SET_VERIFICATION_CODE_ERROR
 } from "../../actions/sign-in-page/sign-in-authorization";
 import {
     SIGN_IN,
     SIGN_UP,
     UNVERIFIED_EMAIL,
+    VERIFICATION_CODE,
     EMPTY_REQUIRED_FIELD,
     WEAK_PASSWORD,
     PASSWORDS_DO_NOT_MATCH,
@@ -26,7 +30,8 @@ import {
     INVALID_PASSWORD_LENGTH,
     LETTERS_ONLY,
     INVALID_EMAIL,
-    SAME_EMAIL
+    SAME_EMAIL,
+    INVALID_VERIFICATION_CODE
 } from "../../../utils/constantList";
 import {
     hasWeakPassword,
@@ -43,11 +48,13 @@ const defaultState = {
     email: '',
     password: '',
     confirmedPassword: '',
+    verificationCode: '',
     errors: {
         firstName: false,
         lastName: false,
         email: false,
-        password: false
+        password: false,
+        verificationCode: false
     },
     showErrors: false,
     logInError: '',
@@ -73,6 +80,12 @@ const signInAuthorization = (state = defaultState, action) => {
             return {
                 ...defaultState,
                 signInComponent: UNVERIFIED_EMAIL,
+                email: state.email
+            };
+        case SHOW_VERIFICATION_CODE:
+            return {
+                ...state,
+                signInComponent: VERIFICATION_CODE,
                 email: state.email
             };
         case SET_FIRST_NAME:
@@ -111,6 +124,11 @@ const signInAuthorization = (state = defaultState, action) => {
                 confirmedPassword: action.payload,
                 errors: getPasswordErrors(state, state.password, action.payload, true)
             };
+        case SET_VERIFICATION_CODE:
+            return {
+                ...state,
+                verificationCode: action.payload
+            };
         case VALIDATE_INPUT_FIELDS:
             return getValidationErrors(state, action.payload);
         case SHOW_ERRORS:
@@ -129,6 +147,14 @@ const signInAuthorization = (state = defaultState, action) => {
                 errors: {
                     ...state.errors,
                     email: action.payload ? SAME_EMAIL: action.payload
+                }
+            };
+        case SET_VERIFICATION_CODE_ERROR:
+            return {
+                ...state,
+                errors: {
+                    ...state.errors,
+                    verificationCode: getVerificationCodeError(state.verificationCode, action.payload)
                 }
             };
         case SET_IS_FETCHING_SIGN_IN:
@@ -200,6 +226,16 @@ function getValidationErrors(state, checkConfirmedPassword) {
             lastName: getError(state.lastName, false, true),
             email: state.errors.email === SAME_EMAIL ? SAME_EMAIL : getError(state.email, true)
         }
+    }
+}
+
+function getVerificationCodeError(inputtedVerificationCode, errorDetected) {
+    if (isEmptyOrSpaces(inputtedVerificationCode)) {
+        return EMPTY_REQUIRED_FIELD
+    } else if (errorDetected) {
+        return INVALID_VERIFICATION_CODE;
+    } else {
+        return false;
     }
 }
 

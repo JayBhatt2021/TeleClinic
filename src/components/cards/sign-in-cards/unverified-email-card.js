@@ -3,23 +3,29 @@ import PropTypes from 'prop-types';
 import {
     Typography,
     Grid,
-    Link
+    Link,
+    CardMedia
 } from '@material-ui/core';
 import React from 'react';
 import {showSignInScreen} from '../../../redux/actions/sign-in-page/sign-in-authorization';
 import {useStyles} from './use-styles';
+import Logo from "../../../utils/images/TeleClinicLogo.png";
 
 const UnverifiedEmailCard = ({showSignInScreen}) => {
     const classes = useStyles();
 
     return (
         <div className={classes.paper}>
+            <CardMedia>
+                <img src={Logo} alt={"TeleClinic Logo"}/>
+            </CardMedia>
             <Typography component="h1" variant="h5">
                 Your email has not been verified.
             </Typography>
             <br/>
             <Typography component="h3">
-                Check your email for steps to verifying your TeleClinic account.
+                Please check your email for steps to verifying your TeleClinic account.
+                If you got multiple emails, please view the most recent one and discard the rest.
             </Typography>
             <br/>
             <Grid item xs>

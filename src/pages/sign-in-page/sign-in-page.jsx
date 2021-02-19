@@ -10,7 +10,13 @@ import {getSignInComponent, getIsFetchingSignIn} from "../../redux/selectors/sig
 import SignInCard from '../../components/cards/sign-in-cards/sign-in-card';
 import SignUpCard from '../../components/cards/sign-in-cards/sign-up-card';
 import UnverifiedEmailCard from "../../components/cards/sign-in-cards/unverified-email-card";
-import {SIGN_UP, SIGN_IN, UNVERIFIED_EMAIL} from "../../utils/constantList";
+import VerificationCodeCard from "../../components/cards/sign-in-cards/verification-code-card";
+import {
+    SIGN_UP,
+    SIGN_IN,
+    UNVERIFIED_EMAIL,
+    VERIFICATION_CODE
+} from "../../utils/constantList";
 import {getUserId} from "../../redux/selectors/user/current-user";
 import {useHistory} from "react-router-dom";
 import Spinner from "../../components/spinner";
@@ -34,6 +40,8 @@ const SignInPage = ({signInComponent, isFetching, userId}) => {
             return <SignUpCard/>
         } else if (signInComponent === UNVERIFIED_EMAIL) {
             return <UnverifiedEmailCard/>
+        } else if (signInComponent === VERIFICATION_CODE) {
+            return <VerificationCodeCard/>
         }
     };
 

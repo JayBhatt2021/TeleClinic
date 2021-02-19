@@ -1,13 +1,15 @@
 import fetchData from "../../../utils/api";
 import {setCurrentUser} from "../user/current-user";
 import {
-    getErrors,
     getFirstName,
     getLastName,
     getPassword,
     getEmail,
-    getUserType
+    getUserType,
+    getVerificationCode,
+    getErrors
 } from "../../selectors/sign-in-page/sign-in-authorization";
+import {PATIENT_TYPE} from "../../../utils/constantList";
 
 const SET_IS_FETCHING_SIGN_IN = 'SET_IS_FETCHING_SIGN_IN';
 const setIsFetchingSignIn = value => {
@@ -43,6 +45,13 @@ const SHOW_UNVERIFIED_EMAIL = 'SHOW_UNVERIFIED_EMAIL';
 const showUnverifiedEmail = () => {
     return {
         type: SHOW_UNVERIFIED_EMAIL
+    }
+};
+
+const SHOW_VERIFICATION_CODE = 'SHOW_VERIFICATION_CODE';
+const showVerificationCode = () => {
+    return {
+        type: SHOW_VERIFICATION_CODE
     }
 };
 
@@ -94,6 +103,14 @@ const setConfirmedPassword = confirmedPassword => {
     }
 };
 
+const SET_VERIFICATION_CODE = 'SET_VERIFICATION_CODE';
+const setVerificationCode = code => {
+    return {
+        type: SET_VERIFICATION_CODE,
+        payload: code
+    }
+};
+
 const VALIDATE_INPUT_FIELDS = 'VALIDATE_INPUT_FIELDS';
 const validateInputFields = checkConfirmedPassword => {
     return {
@@ -122,6 +139,14 @@ const SET_SAME_EMAIL_ERROR = 'SET_SAME_EMAIL_ERROR';
 const setSameEmailError = value => {
     return {
         type: SET_SAME_EMAIL_ERROR,
+        payload: value
+    }
+};
+
+const SET_VERIFICATION_CODE_ERROR = 'SET_VERIFICATION_CODE_ERROR';
+const setVerificationCodeError = value => {
+    return {
+        type: SET_VERIFICATION_CODE_ERROR,
         payload: value
     }
 };
@@ -191,10 +216,12 @@ function signIn() {
     };
 }
 
-function signUp() {
+function regularOrSpecialSignUp() {
     return (dispatch, getState) => {
         dispatch(validateInputFields(true));
+
         const state = getState();
+
         const errors = getErrors(state);
         let hasErrors = false;
         Object.values(errors).forEach(error => {
@@ -207,37 +234,68 @@ function signUp() {
             return dispatch(showErrors(true));
         } else {
             dispatch(showErrors(false));
-            dispatch(setIsFetchingSignIn(true));
-            const params = {
-                firstName: getFirstName(state),
-                lastName: getLastName(state),
-                email: getEmail(state),
-                password: getPassword(state),
-                userType: getUserType(state)
-            };
-
-            const route = '/sign-up';
-
-            dispatch(setPassword(''));
-            dispatch(setConfirmedPassword(''));
-
-            return fetchData(route, params)
-                .then(res => {
-                    if (res.message === 'Email exists.')
-                    {
-                        dispatch(setSameEmailError(true))
-                        dispatch(showErrors(true))
-                    }
-                    else
-                    {
-                        dispatch(showUnverifiedEmail())
-                    }
-                })
-                .then(() => dispatch(setIsFetchingSignIn(false)))
-                .catch(err => {
-                    dispatch(setIsFetchingSignIn(false));
-                });
+            if (getUserType(state) === PATIENT_TYPE) {
+                dispatch(signUp());
+            } else {
+                dispatch(showVerificationCode());
+            }
         }
+    };
+}
+
+function authorizeVerificationCode () {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const route = '/verify-code';
+
+        return fetchData(route)
+            .then(res => {
+                if (res.verificationCode === getVerificationCode(state)) {
+                    dispatch(setVerificationCodeError(false));
+                    dispatch(showErrors(false));
+                    dispatch(signUp());
+                } else {
+                    dispatch(setVerificationCodeError(true));
+                    dispatch(showErrors(true));
+                }
+            })
+    };
+}
+
+function signUp() {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        dispatch(setIsFetchingSignIn(true));
+
+        const params = {
+            firstName: getFirstName(state),
+            lastName: getLastName(state),
+            email: getEmail(state),
+            password: getPassword(state),
+            userType: getUserType(state)
+        };
+
+        const route = '/sign-up';
+
+        dispatch(setPassword(''));
+        dispatch(setConfirmedPassword(''));
+
+        return fetchData(route, params)
+            .then(res => {
+                if (res.message === 'Email exists.') {
+                    dispatch(showSignUpScreen());
+                    dispatch(setSameEmailError(true));
+                    dispatch(showErrors(true));
+                } else {
+                    dispatch(showUnverifiedEmail());
+                }
+            })
+            .then(() => dispatch(setIsFetchingSignIn(false)))
+            .catch(err => {
+                dispatch(setIsFetchingSignIn(false));
+            });
     }
 }
 
@@ -271,6 +329,8 @@ export {
     showSignUpScreen,
     SHOW_UNVERIFIED_EMAIL,
     showUnverifiedEmail,
+    SHOW_VERIFICATION_CODE,
+    showVerificationCode,
     SET_FIRST_NAME,
     setFirstName,
     SET_LAST_NAME,
@@ -283,6 +343,8 @@ export {
     setPassword,
     SET_CONFIRMED_PASSWORD,
     setConfirmedPassword,
+    SET_VERIFICATION_CODE,
+    setVerificationCode,
     VALIDATE_INPUT_FIELDS,
     validateInputFields,
     SHOW_ERRORS,
@@ -291,9 +353,13 @@ export {
     showLogInError,
     SET_SAME_EMAIL_ERROR,
     setSameEmailError,
+    SET_VERIFICATION_CODE_ERROR,
+    setVerificationCodeError,
     getUserInfo,
     checkToken,
     signIn,
+    regularOrSpecialSignUp,
+    authorizeVerificationCode,
     signUp,
     signOut
 }
