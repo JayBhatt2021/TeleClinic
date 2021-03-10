@@ -27,7 +27,7 @@ exports.verifyCode = (req, res) => {
     }
 
     database.collection("verificationCode").doc("code").get().then(doc => {
-        let data ={
+        let data = {
             verificationCode: doc.data().verificationCode,
         };
         returnVerificationCode(data);
@@ -41,7 +41,7 @@ exports.signUpUser = (req, res) => {
     const validation = signUpSchema.validate(req.body);
 
     if (validation.error) {
-        let err = {message:validation.error.details[0].message};
+        let err = {message: validation.error.details[0].message};
         console.log(validation.error.details[0].message);
         return res.status(400).send(err);
     }
@@ -61,12 +61,13 @@ exports.signUpUser = (req, res) => {
             console.error(err);
             const message = {message: "Email exists."};
             return sendRes(message);
-        }).then(function() {
+        }).then(function () {
         let user = firebase.auth().currentUser;
         database.collection('usersInfo').doc(user.uid).set({
-            fullName: firstName + " "+ lastName,
+            fullName: firstName + " " + lastName,
             email: email,
             userType: userType,
+            isOnline: false
         }).catch(err => console.error(err)).then(function () {
             database.collection("users").doc(user.uid).set({
                 userId: user.uid
@@ -77,10 +78,10 @@ exports.signUpUser = (req, res) => {
             return null;
         }).catch(err => console.error(err));
         return null;
-    }).catch(err => console.error(err)).then(function() {
+    }).catch(err => console.error(err)).then(function () {
         const message = {message: "User added successfully."};
         sendRes(message);
-    }).catch(err =>{
+    }).catch(err => {
         console.error(err);
     })
 };
@@ -115,6 +116,9 @@ exports.signInUser = (req, res) => {
             if (user.emailVerified) {
                 firebase.auth().currentUser.getIdToken(false).then(function (idToken) {
                     let uId = user.uid;
+                    database.collection('usersInfo').doc(uId).update({
+                        isOnline: true
+                    }).catch(err => console.error(err))
                     let userInfo = {uId: uId, idToken: idToken};
                     sendRes(200, userInfo);
                 })
@@ -132,17 +136,36 @@ exports.signInUser = (req, res) => {
     });
 };
 
+// Will make user offline
+// REQ: None
+// RES: 200 status and message that says "Success"
+exports.signOutUser = (req, res) => {
+    let user = firebase.auth().currentUser;
+    let userId = user.uid;
+
+    database.collection('usersInfo').doc(userId).update({
+        isOnline: false
+    }).then(() => {
+        res.status(200).send({message: "Success"});
+    }).catch(err => {
+        console.error(err)
+    });
+};
+
 // Will get user information
 // REQ: Authorization Header: tokenId, user must be signed in
 // RES: userId, fullName
 exports.getUser = (req, res) => {
     let user = req.user;
-    function sendResults(data){
+
+    function sendResults(data) {
         res.status(200).send(data);
     }
+
     database.collection("usersInfo").doc(user.uid).get().then(doc => {
-        let data ={
+        let data = {
             userId: user.uid,
+            email: doc.data().email,
             fullName: doc.data().fullName,
             userType: doc.data().userType
         };

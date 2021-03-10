@@ -243,7 +243,7 @@ function regularOrSpecialSignUp() {
     };
 }
 
-function authorizeVerificationCode () {
+function authorizeVerificationCode() {
     return (dispatch, getState) => {
         const state = getState();
 
@@ -304,17 +304,26 @@ function signOut() {
         dispatch(setIsCheckingForToken(true));
         dispatch(setIsFetchingSignIn(true));
 
-        localStorage.removeItem("idToken");
+        const route = '/sign-out';
 
-        dispatch(setCurrentUser({
-            userId: '',
-            fullName: '',
-            userType: ''
-        }));
+        return fetchData(route)
+            .then(res => {
+                localStorage.removeItem("idToken");
 
-        dispatch(showLogInError(''));
-        dispatch(setIsFetchingSignIn(false));
-        dispatch(setIsCheckingForToken(false));
+                dispatch(setCurrentUser({
+                    userId: '',
+                    email: '',
+                    fullName: '',
+                    userType: ''
+                }));
+
+                dispatch(showLogInError(''));
+                dispatch(setIsFetchingSignIn(false));
+                dispatch(setIsCheckingForToken(false));
+            })
+            .catch(err => {
+                console.log(err);
+            });
     };
 }
 
