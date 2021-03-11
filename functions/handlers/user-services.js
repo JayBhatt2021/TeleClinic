@@ -67,6 +67,7 @@ exports.signUpUser = (req, res) => {
             fullName: firstName + " " + lastName,
             email: email,
             userType: userType,
+            uid: user.uid,
             isOnline: false
         }).catch(err => console.error(err)).then(function () {
             database.collection("users").doc(user.uid).set({
@@ -140,13 +141,17 @@ exports.signInUser = (req, res) => {
 // REQ: None
 // RES: 200 status and message that says "Success"
 exports.signOutUser = (req, res) => {
-    let user = firebase.auth().currentUser;
+    let user = req.user;
     let userId = user.uid;
 
-    database.collection('usersInfo').doc(userId).update({
-        isOnline: false
-    }).then(() => {
-        res.status(200).send({message: "Success"});
+    firebase.auth().signOut().then(function () {
+        database.collection('usersInfo').doc(userId).update({
+            isOnline: false
+        }).then(() => {
+            res.status(200).send({message: "Success"});
+        }).catch(err => {
+            console.error(err)
+        });
     }).catch(err => {
         console.error(err)
     });
