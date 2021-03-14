@@ -18,7 +18,7 @@ const obtainRealTimeConversationsSchema = Joi.object({
 
 // Obtains all of the users (besides the current user) in the database
 // REQ: userId
-// RES: all of the users (besides the current user) in the usersInfo collection
+// RES: All of the users (besides the current user) in the usersInfo collection
 exports.obtainRealTimeUsers = (req, res) => {
     const validation = obtainRealTimeUsersSchema.validate(req.body);
     if (validation.error) {

@@ -12,6 +12,10 @@ export const PATIENT_TYPE = 'PATIENT_TYPE';
 export const DOCTOR_TYPE = 'DOCTOR_TYPE';
 export const ADMINISTRATOR_TYPE = 'ADMINISTRATOR_TYPE';
 
+// Medical Reports Page
+export const DIALOG_BOX = 'DIALOG_BOX';
+export const REPORTS_LIST = 'REPORTS_LIST';
+
 // Password Errors
 export const WEAK_PASSWORD = 'WEAK_PASSWORD';
 export const PASSWORDS_DO_NOT_MATCH = 'PASSWORDS_DO_NOT_MATCH';
