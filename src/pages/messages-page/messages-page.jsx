@@ -3,8 +3,9 @@ import './messages-page.css';
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import SidebarUser from "../../components/messages/sidebar-user";
-import {getUserId} from "../../redux/selectors/user/current-user";
+import {getUserId, getUserType} from "../../redux/selectors/user/current-user";
 import {getRealTimeConversations, getRealTimeUsers} from "../../redux/selectors/messages-page/messages";
+import {PATIENT_TYPE} from "../../utils/constantList";
 import {
     obtainRealTimeConversations,
     obtainRealTimeUsers,
@@ -13,6 +14,7 @@ import {
 
 const MessagesPage = ({
                           userId,
+                          userType,
                           realTimeUsers,
                           realTimeConversations,
                           obtainRealTimeUsers,
@@ -58,13 +60,29 @@ const MessagesPage = ({
                 {
                     realTimeUsers.length > 0 ?
                         realTimeUsers.map(user => {
-                            return (
-                                <SidebarUser
-                                    onClick={initChat}
-                                    key={user.uid}
-                                    user={user}
-                                />
-                            );
+                            if (userType === PATIENT_TYPE) {
+                                if (user.userType === PATIENT_TYPE) {
+                                    return null;
+                                }
+                                else {
+                                    return (
+                                        <SidebarUser
+                                            onClick={initChat}
+                                            key={user.uid}
+                                            user={user}
+                                        />
+                                    );
+                                }
+                            }
+                            else {
+                                return (
+                                    <SidebarUser
+                                        onClick={initChat}
+                                        key={user.uid}
+                                        user={user}
+                                    />
+                                );
+                            }
                         }) : null
                 }
             </div>
@@ -105,6 +123,7 @@ const MessagesPage = ({
 
 MessagesPage.propTypes = {
     userId: PropTypes.string.isRequired,
+    userType: PropTypes.string.isRequired,
     realTimeUsers: PropTypes.array.isRequired,
     realTimeConversations: PropTypes.array.isRequired,
     obtainRealTimeUsers: PropTypes.func.isRequired,
@@ -114,6 +133,7 @@ MessagesPage.propTypes = {
 
 const mapStateToProps = state => ({
     userId: getUserId(state),
+    userType: getUserType(state),
     realTimeUsers: getRealTimeUsers(state),
     realTimeConversations: getRealTimeConversations(state)
 });
