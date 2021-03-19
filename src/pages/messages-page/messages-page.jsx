@@ -18,8 +18,7 @@ const MessagesPage = ({
                           obtainRealTimeUsers,
                           obtainRealTimeConversations,
                           updateMessage
-                      }) =>
-{
+                      }) => {
     const [chatStarted, setChatStarted] = useState(false);
     const [chatUser, setChatUser] = useState('');
     const [message, setMessage] = useState('');
@@ -80,7 +79,10 @@ const MessagesPage = ({
                         chatStarted ?
                             realTimeConversations.map(con =>
                                 <div style={{textAlign: con.uid_1 === userId ? 'right' : 'left'}}>
-                                    <p className="messageStyle">{con.message}</p>
+                                    {
+                                        con.uid_1 === userId ? <p className="sentMessageStyle">{con.message}</p> :
+                                            <p className="receivedMessageStyle">{con.message}</p>
+                                    }
                                 </div>)
                             : null
                     }

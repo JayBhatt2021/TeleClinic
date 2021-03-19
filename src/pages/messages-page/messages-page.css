@@ -48,8 +48,16 @@
     width: 10%;
 }
 
-.messageStyle {
+.sentMessageStyle {
     background: skyblue;
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.receivedMessageStyle {
+    background: #EEE;
     display: inline-block;
     padding: 5px 10px;
     border-radius: 10px;
