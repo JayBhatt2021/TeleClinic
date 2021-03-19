@@ -16,6 +16,10 @@ export const ADMINISTRATOR_TYPE = 'ADMINISTRATOR_TYPE';
 export const DIALOG_BOX = 'DIALOG_BOX';
 export const REPORTS_LIST = 'REPORTS_LIST';
 
+// Appointment Request Page
+export const APPOINTMENT_REQUEST_VIEW = 'APPOINTMENT_REQUEST_VIEW';
+export const REQUEST_WINDOW = 'REQUEST_WINDOW';
+
 // Password Errors
 export const WEAK_PASSWORD = 'WEAK_PASSWORD';
 export const PASSWORDS_DO_NOT_MATCH = 'PASSWORDS_DO_NOT_MATCH';
