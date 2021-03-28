@@ -1,6 +1,5 @@
 import React from 'react';
 import './appointment-request-page.css';
-import {makeStyles,} from "@material-ui/core";
 import PropTypes from "prop-types";
 import {connect} from "react-redux";
 import {
@@ -20,10 +19,6 @@ import PatientRequestWindow from "../../components/cards/appointment-request-car
 import DoctorRequestWindow from "../../components/cards/appointment-request-cards/doctor-request-window";
 import Spinner from "../../components/spinner";
 
-const useStyles = makeStyles(theme => ({
-
-}));
-
 const AppointmentRequestPage = ({userType, appointmentRequestComponent}) => {
     const currentComponent = () => {
         if (userType === PATIENT_TYPE && appointmentRequestComponent === APPOINTMENT_REQUEST_VIEW) {
@@ -42,7 +37,7 @@ const AppointmentRequestPage = ({userType, appointmentRequestComponent}) => {
     };
 
     return (
-        <div>
+        <div className="body">
             {currentComponent()}
         </div>
     );
