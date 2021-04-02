@@ -6,7 +6,8 @@ import {
     SET_VISIT_REASON,
     SET_APPOINTMENT_DATE,
     SET_APPOINTMENT_TIME,
-    SET_APPOINTMENT_LIST
+    SET_APPOINTMENT_LIST,
+    SET_PATIENT_SEARCH_FIELD
 } from "../../actions/appointment-request-page/requests";
 import {APPOINTMENT_REQUEST_VIEW, REQUEST_WINDOW} from "../../../utils/constantList";
 
@@ -17,7 +18,8 @@ const defaultState = {
     visitReason: '',
     appointmentDate: '',
     appointmentTime: '',
-    appointmentList: []
+    appointmentList: [],
+    patientSearchField: ''
 };
 
 const requests = (state = defaultState, action) => {
@@ -61,6 +63,11 @@ const requests = (state = defaultState, action) => {
             return {
                 ...state,
                 appointmentList: action.payload
+            };
+        case SET_PATIENT_SEARCH_FIELD:
+            return {
+                ...state,
+                patientSearchField: action.payload
             };
         default:
             return state;

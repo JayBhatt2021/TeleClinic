@@ -3,20 +3,20 @@ import {useStyles} from './use-styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Card, Grid, TextField, Button, Typography, FormControl, InputLabel, Select} from '@material-ui/core';
+import {getFullName} from "../../../redux/selectors/user/current-user";
 import {getAppointmentTime, getVisitReason} from "../../../redux/selectors/appointment-request-page/requests";
 import {
     addAppointmentRequest,
     setAppointmentDate,
     setAppointmentTime,
     setDoctorName,
-    setPatientName,
     setVisitReason
 } from "../../../redux/actions/appointment-request-page/requests";
 
 const PatientRequestWindow = ({
+                                  patientName,
                                   visitReason,
                                   appointmentTime,
-                                  setPatientName,
                                   setDoctorName,
                                   setVisitReason,
                                   setAppointmentDate,
@@ -36,8 +36,8 @@ const PatientRequestWindow = ({
                     autoFocus
                     id="patientName"
                     label="Patient Name"
-                    onChange={e => setPatientName(e.target.value.trim())}
-                    required={true}
+                    value={patientName}
+                    disabled={true}
                 />
                 <TextField
                     id="doctorName"
@@ -106,9 +106,9 @@ const PatientRequestWindow = ({
 };
 
 PatientRequestWindow.propTypes = {
+    patientName: PropTypes.string.isRequired,
     visitReason: PropTypes.string,
     appointmentTime: PropTypes.string,
-    setPatientName: PropTypes.func.isRequired,
     setDoctorName: PropTypes.func.isRequired,
     setVisitReason: PropTypes.func.isRequired,
     setAppointmentDate: PropTypes.func.isRequired,
@@ -117,12 +117,12 @@ PatientRequestWindow.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    patientName: getFullName(state),
     visitReason: getVisitReason(state),
     appointmentTime: getAppointmentTime(state)
 });
 
 const mapDispatchToProps = dispatch => ({
-    setPatientName: patientName => dispatch(setPatientName(patientName)),
     setDoctorName: doctorName => dispatch(setDoctorName(doctorName)),
     setVisitReason: visitReason => dispatch(setVisitReason(visitReason)),
     setAppointmentDate: appointmentDate => dispatch(setAppointmentDate(appointmentDate)),

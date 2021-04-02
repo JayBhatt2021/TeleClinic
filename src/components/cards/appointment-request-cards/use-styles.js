@@ -5,7 +5,6 @@ import {
 export const useStyles = makeStyles(theme => ({
     cardContainer: {
         minWidth: 1000,
-        maxHeight: 410,
         padding: 10,
         marginTop: 20
     },

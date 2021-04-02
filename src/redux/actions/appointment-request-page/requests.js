@@ -1,4 +1,5 @@
 import fetchData from "../../../utils/api";
+import {getFullName} from "../../selectors/user/current-user";
 import {
     getAppointmentDate,
     getAppointmentTime,
@@ -69,12 +70,20 @@ const setAppointmentList = appointmentList => {
     }
 };
 
+const SET_PATIENT_SEARCH_FIELD = 'SET_PATIENT_SEARCH_FIELD';
+const setPatientSearchField = patientSearchField => {
+    return {
+        type: SET_PATIENT_SEARCH_FIELD,
+        payload: patientSearchField
+    }
+};
+
 function addAppointmentRequest() {
     return (dispatch, getState) => {
         const state = getState();
 
         const params = {
-            patientName: getPatientName(state),
+            patientName: setPatientName(getFullName(state)),
             doctorName: getDoctorName(state),
             visitReason: getVisitReason(state),
             appointmentDate: getAppointmentDate(state),
@@ -174,6 +183,8 @@ export {
     setAppointmentTime,
     SET_APPOINTMENT_LIST,
     setAppointmentList,
+    SET_PATIENT_SEARCH_FIELD,
+    setPatientSearchField,
     addAppointmentRequest,
     addActualAppointment,
     obtainAppointmentRequests,

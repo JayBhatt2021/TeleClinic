@@ -12,6 +12,8 @@ const getAppointmentTime = state => state.appointmentRequestPage.requests.appoin
 
 const getAppointmentList = state => state.appointmentRequestPage.requests.appointmentList;
 
+const getPatientSearchField = state => state.appointmentRequestPage.requests.patientSearchField;
+
 export {
     getAppointmentRequestComponent,
     getPatientName,
@@ -19,5 +21,6 @@ export {
     getVisitReason,
     getAppointmentDate,
     getAppointmentTime,
-    getAppointmentList
+    getAppointmentList,
+    getPatientSearchField
 };
