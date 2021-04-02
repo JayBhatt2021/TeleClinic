@@ -1,5 +1,4 @@
 import fetchData from "../../../utils/api";
-import {getFullName} from "../../selectors/user/current-user";
 import {
     getAppointmentDate,
     getAppointmentTime,
@@ -83,7 +82,7 @@ function addAppointmentRequest() {
         const state = getState();
 
         const params = {
-            patientName: setPatientName(getFullName(state)),
+            patientName: getPatientName(state),
             doctorName: getDoctorName(state),
             visitReason: getVisitReason(state),
             appointmentDate: getAppointmentDate(state),
@@ -92,11 +91,10 @@ function addAppointmentRequest() {
 
         const route = '/add-appointment-request';
 
-        dispatch(setPatientName(''));
         dispatch(setDoctorName(''));
         dispatch(setVisitReason(''));
         dispatch(setAppointmentDate(''));
-        dispatch(setAppointmentTime(''));
+        dispatch(setAppointmentTime('8:00 A.M. - 9:00 A.M.'));
 
         return fetchData(route, params)
             .then(() => {
@@ -126,7 +124,7 @@ function addActualAppointment() {
         dispatch(setDoctorName(''));
         dispatch(setVisitReason(''));
         dispatch(setAppointmentDate(''));
-        dispatch(setAppointmentTime(''));
+        dispatch(setAppointmentTime('8:00 A.M. - 9:00 A.M.'));
 
         return fetchData(route, params)
             .then(() => {

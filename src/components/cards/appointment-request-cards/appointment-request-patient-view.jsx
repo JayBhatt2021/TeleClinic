@@ -6,18 +6,33 @@ import {Button, Card, Typography} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import {getFullName} from "../../../redux/selectors/user/current-user";
 import {getAppointmentList} from "../../../redux/selectors/appointment-request-page/requests";
-import {obtainActualAppointments, showRequestWindow} from "../../../redux/actions/appointment-request-page/requests";
+import {
+    obtainActualAppointments,
+    setPatientName,
+    showRequestWindow
+} from "../../../redux/actions/appointment-request-page/requests";
 
-const AppointmentRequestPatientView = ({userName, appointmentList, showRequestWindow, obtainActualAppointments}) => {
+const AppointmentRequestPatientView = ({
+                                           userName,
+                                           appointmentList,
+                                           showRequestWindow,
+                                           setPatientName,
+                                           obtainActualAppointments
+                                       }) => {
     const classes = useStyles();
 
     useEffect(() => {
         obtainActualAppointments();
     });
 
+    const goToPatientRequestWindow = () => {
+        setPatientName(userName);
+        showRequestWindow();
+    }
+
     return (
         <div>
-            <Button variant="contained" color="primary" onClick={showRequestWindow}>
+            <Button variant="contained" color="primary" onClick={() => goToPatientRequestWindow()}>
                 + Request Appointment
             </Button>
             <Card className={classes.cardContainer}>
@@ -46,8 +61,7 @@ const AppointmentRequestPatientView = ({userName, appointmentList, showRequestWi
                                         </Typography>
                                     </Card>
                                 )
-                            }
-                            else {
+                            } else {
                                 return null;
                             }
                         })
@@ -65,6 +79,7 @@ AppointmentRequestPatientView.propTypes = {
     userName: PropTypes.string.isRequired,
     appointmentList: PropTypes.array.isRequired,
     showRequestWindow: PropTypes.func.isRequired,
+    setPatientName: PropTypes.func.isRequired,
     obtainActualAppointments: PropTypes.func.isRequired
 };
 
@@ -75,6 +90,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     showRequestWindow: () => dispatch(showRequestWindow()),
+    setPatientName: patientName => dispatch(setPatientName(patientName)),
     obtainActualAppointments: () => dispatch(obtainActualAppointments()),
 });
 

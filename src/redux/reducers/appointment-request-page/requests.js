@@ -17,7 +17,7 @@ const defaultState = {
     doctorName: '',
     visitReason: '',
     appointmentDate: '',
-    appointmentTime: '',
+    appointmentTime: '8:00 A.M. - 9:00 A.M.',
     appointmentList: [],
     patientSearchField: ''
 };

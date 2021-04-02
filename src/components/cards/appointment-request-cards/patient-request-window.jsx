@@ -86,7 +86,7 @@ const PatientRequestWindow = ({
                     label="Reason For Visit"
                     type="text"
                     inputProps={{
-                        maxlength: 40
+                        maxLength: 40
                     }}
                     onChange={e => setVisitReason(e.target.value.trim())}
                     required={true}
