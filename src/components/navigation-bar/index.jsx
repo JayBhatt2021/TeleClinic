@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import {getFullName} from '../../redux/selectors/user/current-user';
 import {signOut} from "../../redux/actions/sign-in-page/sign-in-authorization";
 import {navigationBarStyles} from "./navigation-bar-styles";
-import {AppBar, Divider, IconButton, Toolbar, Typography} from "@material-ui/core";
+import {AppBar, Divider, IconButton, Toolbar} from "@material-ui/core";
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import Logo from '../../utils/images/TeleClinicLogoWhite.png';
 

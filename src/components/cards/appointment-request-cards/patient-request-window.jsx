@@ -2,10 +2,27 @@ import React from 'react';
 import {useStyles} from './use-styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Card, Grid, TextField, Button, Typography} from '@material-ui/core';
-import {showAppointmentRequestView} from "../../../redux/actions/appointment-request-page/requests";
+import {Card, Grid, TextField, Button, Typography, FormControl, InputLabel, Select} from '@material-ui/core';
+import {getAppointmentTime, getVisitReason} from "../../../redux/selectors/appointment-request-page/requests";
+import {
+    addAppointmentRequest,
+    setAppointmentDate,
+    setAppointmentTime,
+    setDoctorName,
+    setPatientName,
+    setVisitReason
+} from "../../../redux/actions/appointment-request-page/requests";
 
-const PatientRequestWindow = ({showAppointmentRequestView}) => {
+const PatientRequestWindow = ({
+                                  visitReason,
+                                  appointmentTime,
+                                  setPatientName,
+                                  setDoctorName,
+                                  setVisitReason,
+                                  setAppointmentDate,
+                                  setAppointmentTime,
+                                  addAppointmentRequest
+                              }) => {
     const classes = useStyles();
 
     return (
@@ -19,10 +36,15 @@ const PatientRequestWindow = ({showAppointmentRequestView}) => {
                     autoFocus
                     id="patientName"
                     label="Patient Name"
+                    onChange={e => setPatientName(e.target.value.trim())}
+                    required={true}
                 />
-                <TextField id="doctorName"
-                           label="Doctor Name"
-                           type="text"
+                <TextField
+                    id="doctorName"
+                    label="Doctor Name"
+                    type="text"
+                    onChange={e => setDoctorName(e.target.value.trim())}
+                    required={true}
                 />
                 <form className={classes.calendarContainer} noValidate>
                     <TextField
@@ -33,31 +55,49 @@ const PatientRequestWindow = ({showAppointmentRequestView}) => {
                         InputLabelProps={{
                             shrink: true,
                         }}
+                        onChange={e => setAppointmentDate(e.target.value.trim())}
+                        required={true}
                     />
                 </form>
-                <form className={classes.calendarContainer} noValidate>
-                    <TextField
-                        id="appointmentTime"
-                        label="Appointment Time"
-                        type="time"
-                        defaultValue="08:00"
-                        className={classes.calendarTextField}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
+                <FormControl required={true}>
+                    <InputLabel htmlFor="appointmentTime">Appointment Time</InputLabel>
+                    <Select
+                        native
+                        value={appointmentTime}
+                        onChange={e => setAppointmentTime(e.target.value.trim())}
                         inputProps={{
-                            step: 300, // 5 min
+                            name: 'Appointment Time',
+                            id: 'appointmentTime',
                         }}
-                    />
-                </form>
-                <TextField id="reasonForVisit"
-                           label="Reason For Visit"
-                           type="text"
+                    >
+                        <option value={"8:00 A.M. - 9:00 A.M."}>8:00 A.M. - 9:00 A.M.</option>
+                        <option value={"9:00 A.M. - 10:00 A.M."}>9:00 A.M. - 10:00 A.M.</option>
+                        <option value={"10:00 A.M. - 11:00 A.M."}>10:00 A.M. - 11:00 A.M.</option>
+                        <option value={"11:00 A.M. - 12:00 P.M."}>11:00 A.M. - 12:00 P.M.</option>
+                        <option value={"12:00 P.M. - 1:00 P.M."}>12:00 P.M. - 1:00 P.M.</option>
+                        <option value={"1:00 P.M. - 2:00 P.M."}>1:00 P.M. - 2:00 P.M.</option>
+                        <option value={"2:00 P.M. - 3:00 P.M."}>2:00 P.M. - 3:00 P.M.</option>
+                        <option value={"3:00 P.M. - 4:00 P.M."}>3:00 P.M. - 4:00 P.M.</option>
+                        <option value={"4:00 P.M. - 5:00 P.M."}>4:00 P.M. - 5:00 P.M.</option>
+                    </Select>
+                </FormControl>
+                <TextField
+                    id="reasonForVisit"
+                    label="Reason For Visit"
+                    type="text"
+                    inputProps={{
+                        maxlength: 40
+                    }}
+                    onChange={e => setVisitReason(e.target.value.trim())}
+                    required={true}
+                    helperText={`${visitReason.length}/40`}
                 />
-                <Button variant="contained"
-                        color="primary"
-                        className={classes.submitAppointmentButton}
-                        onClick={showAppointmentRequestView}>
+                <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.submitAppointmentButton}
+                    onClick={addAppointmentRequest}
+                >
                     Submit Appointment
                 </Button>
             </Grid>
@@ -66,13 +106,28 @@ const PatientRequestWindow = ({showAppointmentRequestView}) => {
 };
 
 PatientRequestWindow.propTypes = {
-    showAppointmentRequestView: PropTypes.func.isRequired,
+    visitReason: PropTypes.string,
+    appointmentTime: PropTypes.string,
+    setPatientName: PropTypes.func.isRequired,
+    setDoctorName: PropTypes.func.isRequired,
+    setVisitReason: PropTypes.func.isRequired,
+    setAppointmentDate: PropTypes.func.isRequired,
+    setAppointmentTime: PropTypes.func.isRequired,
+    addAppointmentRequest: PropTypes.func.isRequired
 };
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+    visitReason: getVisitReason(state),
+    appointmentTime: getAppointmentTime(state)
+});
 
 const mapDispatchToProps = dispatch => ({
-    showAppointmentRequestView: () => dispatch(showAppointmentRequestView()),
+    setPatientName: patientName => dispatch(setPatientName(patientName)),
+    setDoctorName: doctorName => dispatch(setDoctorName(doctorName)),
+    setVisitReason: visitReason => dispatch(setVisitReason(visitReason)),
+    setAppointmentDate: appointmentDate => dispatch(setAppointmentDate(appointmentDate)),
+    setAppointmentTime: appointmentTime => dispatch(setAppointmentTime(appointmentTime)),
+    addAppointmentRequest: () => dispatch(addAppointmentRequest())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PatientRequestWindow);

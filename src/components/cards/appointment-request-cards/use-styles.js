@@ -14,7 +14,8 @@ export const useStyles = makeStyles(theme => ({
     },
     appointmentCard: {
         backgroundColor: "dodgerblue",
-        padding: 15
+        padding: 15,
+        marginBottom: 20
     },
     appointmentCardText: {
         color: "white"

@@ -16,6 +16,12 @@ const {
     updateReportFileLocation,
     obtainReports
 } = require("./handlers/medical-reports-services");
+const {
+    addAppointmentRequest,
+    addActualAppointment,
+    obtainAppointmentRequests,
+    obtainActualAppointments
+} = require("./handlers/appointment-request-services");
 
 // User Services Routes
 router.post("/verify-code", verifyCode);
@@ -37,5 +43,11 @@ router.post("/add-report", addReport);
 router.post("/upload-report-file", FBAuth, uploadReportFile);
 router.post("/update-report-file-location", updateReportFileLocation);
 router.post("/obtain-reports", obtainReports);
+
+// Appointment Request Services Routes
+router.post("/add-appointment-request", addAppointmentRequest);
+router.post("/add-actual-appointment", addActualAppointment);
+router.post("/obtain-appointment-requests", obtainAppointmentRequests);
+router.post("/obtain-actual-appointments", obtainActualAppointments);
 
 exports.api = functions.https.onRequest(router);
