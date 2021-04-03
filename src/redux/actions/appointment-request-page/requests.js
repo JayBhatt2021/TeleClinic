@@ -164,6 +164,63 @@ function obtainActualAppointments() {
     };
 }
 
+function denyAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
+    return () => {
+        const params = {
+            patientName: patientName,
+            doctorName: doctorName,
+            visitReason: visitReason,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+        };
+
+        const route = '/deny-appointment-request';
+
+        return fetchData(route, params)
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
+function approveAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
+    return () => {
+        const params = {
+            patientName: patientName,
+            doctorName: doctorName,
+            visitReason: visitReason,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+        };
+
+        const route = '/approve-appointment-request';
+
+        return fetchData(route, params)
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
+function cancelActualAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
+    return () => {
+        const params = {
+            patientName: patientName,
+            doctorName: doctorName,
+            visitReason: visitReason,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+        };
+
+        const route = '/cancel-actual-appointment';
+
+        return fetchData(route, params)
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
 export {
     SHOW_APPOINTMENT_REQUEST_VIEW,
     showAppointmentRequestView,
@@ -186,5 +243,8 @@ export {
     addAppointmentRequest,
     addActualAppointment,
     obtainAppointmentRequests,
-    obtainActualAppointments
+    obtainActualAppointments,
+    denyAppointmentRequest,
+    approveAppointmentRequest,
+    cancelActualAppointment
 }

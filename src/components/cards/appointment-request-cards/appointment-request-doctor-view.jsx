@@ -8,6 +8,8 @@ import DoneOutlineIcon from '@material-ui/icons/DoneOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 import {getAppointmentList, getPatientSearchField} from "../../../redux/selectors/appointment-request-page/requests";
 import {
+    approveAppointmentRequest,
+    denyAppointmentRequest,
     obtainAppointmentRequests,
     setPatientSearchField,
     showRequestWindow
@@ -18,7 +20,9 @@ const AppointmentRequestDoctorView = ({
                                           searchField,
                                           showRequestWindow,
                                           setSearchField,
-                                          obtainAppointmentRequests
+                                          obtainAppointmentRequests,
+                                          denyAppointmentRequest,
+                                          approveAppointmentRequest
                                       }) => {
     const classes = useStyles();
 
@@ -65,6 +69,10 @@ const AppointmentRequestDoctorView = ({
                                                 variant="contained"
                                                 className={classes.appointmentCardCancelButton}
                                                 startIcon={<ClearIcon/>}
+                                                onClick={() => denyAppointmentRequest(appointment.patientName,
+                                                    appointment.doctorName, appointment.visitReason,
+                                                    appointment.appointmentDate, appointment.appointmentTime)
+                                                }
                                             >
                                                 Deny
                                             </Button>
@@ -72,6 +80,10 @@ const AppointmentRequestDoctorView = ({
                                                 variant="contained"
                                                 className={classes.appointmentCardApproveButton}
                                                 startIcon={<DoneOutlineIcon/>}
+                                                onClick={() => approveAppointmentRequest(appointment.patientName,
+                                                    appointment.doctorName, appointment.visitReason,
+                                                    appointment.appointmentDate, appointment.appointmentTime)
+                                                }
                                             >
                                                 Approve
                                             </Button>
@@ -97,7 +109,9 @@ AppointmentRequestDoctorView.propTypes = {
     searchField: PropTypes.string,
     showRequestWindow: PropTypes.func.isRequired,
     setSearchField: PropTypes.func.isRequired,
-    obtainAppointmentRequests: PropTypes.func.isRequired
+    obtainAppointmentRequests: PropTypes.func.isRequired,
+    denyAppointmentRequest: PropTypes.func.isRequired,
+    approveAppointmentRequest: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -108,7 +122,11 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     showRequestWindow: () => dispatch(showRequestWindow()),
     setSearchField: searchField => dispatch(setPatientSearchField(searchField)),
-    obtainAppointmentRequests: () => dispatch(obtainAppointmentRequests())
+    obtainAppointmentRequests: () => dispatch(obtainAppointmentRequests()),
+    denyAppointmentRequest: (patientName, doctorName, visitReason, appointmentDate, appointmentTime) =>
+        dispatch(denyAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime)),
+    approveAppointmentRequest: (patientName, doctorName, visitReason, appointmentDate, appointmentTime) =>
+        dispatch(approveAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentRequestDoctorView);

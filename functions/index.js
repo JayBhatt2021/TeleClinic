@@ -20,7 +20,10 @@ const {
     addAppointmentRequest,
     addActualAppointment,
     obtainAppointmentRequests,
-    obtainActualAppointments
+    obtainActualAppointments,
+    denyAppointmentRequest,
+    approveAppointmentRequest,
+    cancelActualAppointment
 } = require("./handlers/appointment-request-services");
 
 // User Services Routes
@@ -49,5 +52,8 @@ router.post("/add-appointment-request", addAppointmentRequest);
 router.post("/add-actual-appointment", addActualAppointment);
 router.post("/obtain-appointment-requests", obtainAppointmentRequests);
 router.post("/obtain-actual-appointments", obtainActualAppointments);
+router.post("/deny-appointment-request", denyAppointmentRequest);
+router.post("/approve-appointment-request", approveAppointmentRequest);
+router.post("/cancel-actual-appointment", cancelActualAppointment);
 
 exports.api = functions.https.onRequest(router);

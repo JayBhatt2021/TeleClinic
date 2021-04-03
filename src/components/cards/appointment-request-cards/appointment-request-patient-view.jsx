@@ -7,6 +7,7 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import {getFullName} from "../../../redux/selectors/user/current-user";
 import {getAppointmentList} from "../../../redux/selectors/appointment-request-page/requests";
 import {
+    cancelActualAppointment,
     obtainActualAppointments,
     setPatientName,
     showRequestWindow
@@ -17,7 +18,8 @@ const AppointmentRequestPatientView = ({
                                            appointmentList,
                                            showRequestWindow,
                                            setPatientName,
-                                           obtainActualAppointments
+                                           obtainActualAppointments,
+                                           cancelActualAppointment
                                        }) => {
     const classes = useStyles();
 
@@ -55,6 +57,10 @@ const AppointmentRequestPatientView = ({
                                                 variant="contained"
                                                 className={classes.appointmentCardCancelButton}
                                                 startIcon={<DeleteIcon/>}
+                                                onClick={() => cancelActualAppointment(appointment.patientName,
+                                                    appointment.doctorName, appointment.visitReason,
+                                                    appointment.appointmentDate, appointment.appointmentTime)
+                                                }
                                             >
                                                 Cancel
                                             </Button>
@@ -80,7 +86,8 @@ AppointmentRequestPatientView.propTypes = {
     appointmentList: PropTypes.array.isRequired,
     showRequestWindow: PropTypes.func.isRequired,
     setPatientName: PropTypes.func.isRequired,
-    obtainActualAppointments: PropTypes.func.isRequired
+    obtainActualAppointments: PropTypes.func.isRequired,
+    cancelActualAppointment: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -92,6 +99,8 @@ const mapDispatchToProps = dispatch => ({
     showRequestWindow: () => dispatch(showRequestWindow()),
     setPatientName: patientName => dispatch(setPatientName(patientName)),
     obtainActualAppointments: () => dispatch(obtainActualAppointments()),
+    cancelActualAppointment: (patientName, doctorName, visitReason, appointmentDate, appointmentTime) =>
+        dispatch(cancelActualAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentRequestPatientView);

@@ -32,7 +32,8 @@ exports.addAppointmentRequest = (req, res) => {
     const appointmentTime = req.body.appointmentTime;
 
     database.collection("doctorRequests")
-        .add({
+        .doc(patientName + doctorName + appointmentDate + appointmentTime)
+        .set({
             patientName: patientName,
             doctorName: doctorName,
             visitReason: visitReason,
@@ -70,7 +71,8 @@ exports.addActualAppointment = (req, res) => {
     const appointmentTime = req.body.appointmentTime;
 
     database.collection("patientAppointments")
-        .add({
+        .doc(patientName + doctorName + appointmentDate + appointmentTime)
+        .set({
             patientName: patientName,
             doctorName: doctorName,
             visitReason: visitReason,
@@ -112,4 +114,114 @@ exports.obtainActualAppointments = (req, res) => {
             });
             res.status(200).send(actualAppointmentsArray);
         });
+};
+
+// Removes an appointment request from the doctorRequests collection
+// REQ: patientName, doctorName, visitReason, appointmentDate, appointmentTime
+// RES returns on success: Status 200, 'Appointment request removed successfully.'
+// RES returns on fail: Status 400, bad request
+exports.denyAppointmentRequest = (req, res) => {
+    const validation = addAppointmentRequestSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    function sendResults(message) {
+        res.status(200).send(message);
+    }
+
+    const patientName = req.body.patientName;
+    const doctorName = req.body.doctorName;
+    const appointmentDate = req.body.appointmentDate;
+    const appointmentTime = req.body.appointmentTime;
+
+    database.collection("doctorRequests")
+        .doc(patientName + doctorName + appointmentDate + appointmentTime)
+        .delete()
+        .then(function () {
+            const message = {message: "Appointment request removed successfully."};
+            sendResults(message);
+        })
+        .catch(err => {
+            console.error(err);
+        })
+};
+
+// Removes an appointment request from the doctorRequests collection and adds it to the patientAppointments collection
+// REQ: patientName, doctorName, visitReason, appointmentDate, appointmentTime
+// RES returns on success: Status 200, 'Appointment request transferred successfully.'
+// RES returns on fail: Status 400, bad request
+exports.approveAppointmentRequest = (req, res) => {
+    const validation = addAppointmentRequestSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    function sendResults(message) {
+        res.status(200).send(message);
+    }
+
+    const patientName = req.body.patientName;
+    const doctorName = req.body.doctorName;
+    const visitReason = req.body.visitReason;
+    const appointmentDate = req.body.appointmentDate;
+    const appointmentTime = req.body.appointmentTime;
+
+    database.collection("doctorRequests")
+        .doc(patientName + doctorName + appointmentDate + appointmentTime)
+        .delete()
+        .catch(err => {
+            console.error(err);
+        })
+
+    database.collection("patientAppointments")
+        .doc(patientName + doctorName + appointmentDate + appointmentTime)
+        .set({
+            patientName: patientName,
+            doctorName: doctorName,
+            visitReason: visitReason,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+        })
+        .then(function () {
+            const message = {message: "Appointment request transferred successfully."};
+            sendResults(message);
+        })
+        .catch(err => {
+            console.error(err);
+        })
+};
+
+// Removes an actual appointment from the patientAppointments collection
+// REQ: patientName, doctorName, visitReason, appointmentDate, appointmentTime
+// RES returns on success: Status 200, 'Actual appointment removed successfully.'
+// RES returns on fail: Status 400, bad request
+exports.cancelActualAppointment = (req, res) => {
+    const validation = addAppointmentRequestSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    function sendResults(message) {
+        res.status(200).send(message);
+    }
+
+    const patientName = req.body.patientName;
+    const doctorName = req.body.doctorName;
+    const appointmentDate = req.body.appointmentDate;
+    const appointmentTime = req.body.appointmentTime;
+
+    database.collection("patientAppointments")
+        .doc(patientName + doctorName + appointmentDate + appointmentTime)
+        .delete()
+        .then(function () {
+            const message = {message: "Actual appointment removed successfully."};
+            sendResults(message);
+        })
+        .catch(err => {
+            console.error(err);
+        })
 };

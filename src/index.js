@@ -14,7 +14,7 @@ const myStore = createStore(
         applyMiddleware(thunk),
         //todo: comment below line out when not using Redux DevTools
         // (commenting the below line out allows app to work on other browsers besides Chrome)
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        //window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
     )
 );
 
