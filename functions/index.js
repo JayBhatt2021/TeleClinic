@@ -25,6 +25,12 @@ const {
     approveAppointmentRequest,
     cancelActualAppointment
 } = require("./handlers/appointment-request-services");
+const {
+    addVideo,
+    uploadVideoFile,
+    updateVideoFileLocation,
+    obtainVideos
+} = require("./handlers/video-recording-services");
 
 // User Services Routes
 router.post("/verify-code", verifyCode);
@@ -55,5 +61,11 @@ router.post("/obtain-actual-appointments", obtainActualAppointments);
 router.post("/deny-appointment-request", denyAppointmentRequest);
 router.post("/approve-appointment-request", approveAppointmentRequest);
 router.post("/cancel-actual-appointment", cancelActualAppointment);
+
+// Video Recording Services Routes
+router.post("/add-video", addVideo);
+router.post("/upload-video-file", FBAuth, uploadVideoFile);
+router.post("/update-video-file-location", updateVideoFileLocation);
+router.post("/obtain-videos", obtainVideos);
 
 exports.api = functions.https.onRequest(router);
