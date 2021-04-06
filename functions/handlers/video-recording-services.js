@@ -3,6 +3,7 @@ const {database, admin} = require('../util/admin');
 const config = require("../util/config");
 
 const addVideoSchema = Joi.object({
+    userName: Joi.string().required(),
     videoName: Joi.string().required()
 });
 
@@ -26,10 +27,12 @@ exports.addVideo = (req, res) => {
         res.status(200).send(message);
     }
 
+    const userName = req.body.userName;
     const videoName = req.body.videoName;
 
     database.collection("videos").doc(videoName)
         .set({
+            userName: userName,
             videoName: videoName,
             videoFileUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Heart.mp4?alt=media`
         })

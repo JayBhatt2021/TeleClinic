@@ -1,5 +1,6 @@
 import axios from 'axios';
 import fetchData from "../../../utils/api";
+import {getFullName} from "../../selectors/user/current-user";
 import {getVideoFile, getVideoName} from "../../selectors/video-recording-page/videos";
 
 const SHOW_MAIN_VIDEO_VIEW = 'SHOW_MAIN_VIDEO_VIEW';
@@ -53,6 +54,7 @@ function addVideo() {
         const state = getState();
 
         const params = {
+            userName: getFullName(state),
             videoName: getVideoName(state),
         };
 

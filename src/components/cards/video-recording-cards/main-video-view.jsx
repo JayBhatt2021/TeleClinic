@@ -7,6 +7,7 @@ import {Player} from 'video-react';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import 'video-react/dist/video-react.css';
 import thumbnailIcon from "../../../utils/images/thumbnail.jpg";
+import {getFullName} from "../../../redux/selectors/user/current-user";
 import {getSavedVideosList, getVideoFileUrl} from "../../../redux/selectors/video-recording-page/videos";
 import {
     addVideo,
@@ -17,6 +18,7 @@ import {
 } from "../../../redux/actions/video-recording-page/videos";
 
 const MainVideoView = ({
+                           fullName,
                            videoFileUrl,
                            savedVideosList,
                            setVideoName,
@@ -61,24 +63,29 @@ const MainVideoView = ({
                     {
                         savedVideosList.length > 0 ?
                             savedVideosList.map(video => {
-                                return (
-                                    <Tooltip
-                                        title={video.videoName}
-                                        justify={'center'}
-                                        style={{width: "100%"}}
-                                        className={classes.thumbnailButton}
-                                    >
-                                        <Button
-                                            onClick={() => setVideoFileUrl(video.videoFileUrl)}
+                                if (video.userName === fullName) {
+                                    return (
+                                        <Tooltip
+                                            title={video.videoName}
+                                            justify={'center'}
+                                            style={{width: "100%"}}
+                                            className={classes.thumbnailButton}
                                         >
-                                            <img
-                                                src={thumbnailIcon}
-                                                alt="Thumbnail Icon"
-                                                className={classes.thumbnailIcon}
-                                            />
-                                        </Button>
-                                    </Tooltip>
-                                )
+                                            <Button
+                                                onClick={() => setVideoFileUrl(video.videoFileUrl)}
+                                            >
+                                                <img
+                                                    src={thumbnailIcon}
+                                                    alt="Thumbnail Icon"
+                                                    className={classes.thumbnailIcon}
+                                                />
+                                            </Button>
+                                        </Tooltip>
+                                    )
+                                }
+                                else {
+                                    return null;
+                                }
                             })
                             :
                             <Typography align="center" variant="h6">
@@ -111,6 +118,7 @@ const MainVideoView = ({
 };
 
 MainVideoView.propTypes = {
+    fullName: PropTypes.func.isRequired,
     videoFileUrl: PropTypes.string,
     savedVideosList: PropTypes.array.isRequired,
     setVideoName: PropTypes.func.isRequired,
@@ -121,6 +129,7 @@ MainVideoView.propTypes = {
 };
 
 const mapStateToProps = state => ({
+    fullName: getFullName(state),
     videoFileUrl: getVideoFileUrl(state),
     savedVideosList: getSavedVideosList(state)
 });
