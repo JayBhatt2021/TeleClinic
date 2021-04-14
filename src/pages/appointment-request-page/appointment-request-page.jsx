@@ -15,22 +15,21 @@ import AppointmentRequestPatientView
     from "../../components/cards/appointment-request-cards/appointment-request-patient-view";
 import AppointmentRequestDoctorView
     from "../../components/cards/appointment-request-cards/appointment-request-doctor-view";
-import PatientRequestWindow from "../../components/cards/appointment-request-cards/patient-request-window";
-import DoctorRequestWindow from "../../components/cards/appointment-request-cards/doctor-request-window";
+import AppointmentRequestAdminView
+    from "../../components/cards/appointment-request-cards/appointment-request-admin-view";
+import AdminRequestWindow from "../../components/cards/appointment-request-cards/admin-request-window";
 import Spinner from "../../components/spinner";
 
 const AppointmentRequestPage = ({userType, appointmentRequestComponent}) => {
     const currentComponent = () => {
         if (userType === PATIENT_TYPE && appointmentRequestComponent === APPOINTMENT_REQUEST_VIEW) {
             return <AppointmentRequestPatientView/>
-        } else if (userType === PATIENT_TYPE && appointmentRequestComponent === REQUEST_WINDOW) {
-            return <PatientRequestWindow/>
-        } else if ((userType === DOCTOR_TYPE || userType === ADMINISTRATOR_TYPE) &&
-            appointmentRequestComponent === APPOINTMENT_REQUEST_VIEW) {
+        } else if (userType === DOCTOR_TYPE && appointmentRequestComponent === APPOINTMENT_REQUEST_VIEW) {
             return <AppointmentRequestDoctorView/>
-        } else if ((userType === DOCTOR_TYPE || userType === ADMINISTRATOR_TYPE) &&
-            appointmentRequestComponent === REQUEST_WINDOW) {
-            return <DoctorRequestWindow/>
+        } else if (userType === ADMINISTRATOR_TYPE && appointmentRequestComponent === APPOINTMENT_REQUEST_VIEW) {
+            return <AppointmentRequestAdminView/>
+        } else if (userType === ADMINISTRATOR_TYPE && appointmentRequestComponent === REQUEST_WINDOW) {
+            return <AdminRequestWindow/>
         } else {
             return <Spinner/>
         }

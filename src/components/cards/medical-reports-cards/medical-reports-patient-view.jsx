@@ -59,7 +59,7 @@ const MedicalReportsPatientView = ({reportList, userName, obtainReports}) => {
                             <Typography
                                 className={classes.accordionHeading}
                             >
-                                You do not currently have any medical reports.
+                                You do not have any medical reports.
                             </Typography>
                         </AccordionSummary>
                         <AccordionDetails>

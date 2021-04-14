@@ -77,7 +77,7 @@ const setPatientSearchField = patientSearchField => {
     }
 };
 
-function addAppointmentRequest() {
+function addAppointment() {
     return (dispatch, getState) => {
         const state = getState();
 
@@ -89,36 +89,7 @@ function addAppointmentRequest() {
             appointmentTime: getAppointmentTime(state)
         };
 
-        const route = '/add-appointment-request';
-
-        dispatch(setDoctorName(''));
-        dispatch(setVisitReason(''));
-        dispatch(setAppointmentDate(''));
-        dispatch(setAppointmentTime('8:00 A.M. - 9:00 A.M.'));
-
-        return fetchData(route, params)
-            .then(() => {
-                dispatch(showAppointmentRequestView());
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function addActualAppointment() {
-    return (dispatch, getState) => {
-        const state = getState();
-
-        const params = {
-            patientName: getPatientName(state),
-            doctorName: getDoctorName(state),
-            visitReason: getVisitReason(state),
-            appointmentDate: getAppointmentDate(state),
-            appointmentTime: getAppointmentTime(state)
-        };
-
-        const route = '/add-actual-appointment';
+        const route = '/add-appointment';
 
         dispatch(setPatientName(''));
         dispatch(setDoctorName(''));
@@ -136,85 +107,33 @@ function addActualAppointment() {
     };
 }
 
-function obtainAppointmentRequests() {
+function cancelAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
+    return () => {
+        const params = {
+            patientName: patientName,
+            doctorName: doctorName,
+            visitReason: visitReason,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+        };
+
+        const route = '/cancel-appointment';
+
+        return fetchData(route, params)
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
+function obtainAppointments() {
     return dispatch => {
-        const route = '/obtain-appointment-requests';
+        const route = '/obtain-appointments';
 
         return fetchData(route)
             .then(res => {
                 dispatch(setAppointmentList(res));
             })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function obtainActualAppointments() {
-    return dispatch => {
-        const route = '/obtain-actual-appointments';
-
-        return fetchData(route)
-            .then(res => {
-                dispatch(setAppointmentList(res));
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function denyAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
-    return () => {
-        const params = {
-            patientName: patientName,
-            doctorName: doctorName,
-            visitReason: visitReason,
-            appointmentDate: appointmentDate,
-            appointmentTime: appointmentTime
-        };
-
-        const route = '/deny-appointment-request';
-
-        return fetchData(route, params)
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function approveAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
-    return () => {
-        const params = {
-            patientName: patientName,
-            doctorName: doctorName,
-            visitReason: visitReason,
-            appointmentDate: appointmentDate,
-            appointmentTime: appointmentTime
-        };
-
-        const route = '/approve-appointment-request';
-
-        return fetchData(route, params)
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function cancelActualAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
-    return () => {
-        const params = {
-            patientName: patientName,
-            doctorName: doctorName,
-            visitReason: visitReason,
-            appointmentDate: appointmentDate,
-            appointmentTime: appointmentTime
-        };
-
-        const route = '/cancel-actual-appointment';
-
-        return fetchData(route, params)
             .catch(err => {
                 console.log(err);
             });
@@ -240,11 +159,7 @@ export {
     setAppointmentList,
     SET_PATIENT_SEARCH_FIELD,
     setPatientSearchField,
-    addAppointmentRequest,
-    addActualAppointment,
-    obtainAppointmentRequests,
-    obtainActualAppointments,
-    denyAppointmentRequest,
-    approveAppointmentRequest,
-    cancelActualAppointment
+    addAppointment,
+    cancelAppointment,
+    obtainAppointments
 }

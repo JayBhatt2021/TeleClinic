@@ -16,15 +16,7 @@ const {
     updateReportFileLocation,
     obtainReports
 } = require("./handlers/medical-reports-services");
-const {
-    addAppointmentRequest,
-    addActualAppointment,
-    obtainAppointmentRequests,
-    obtainActualAppointments,
-    denyAppointmentRequest,
-    approveAppointmentRequest,
-    cancelActualAppointment
-} = require("./handlers/appointment-request-services");
+const {addAppointment, cancelAppointment, obtainAppointments} = require("./handlers/appointment-request-services");
 const {
     addVideo,
     uploadVideoFile,
@@ -54,13 +46,9 @@ router.post("/update-report-file-location", updateReportFileLocation);
 router.post("/obtain-reports", obtainReports);
 
 // Appointment Request Services Routes
-router.post("/add-appointment-request", addAppointmentRequest);
-router.post("/add-actual-appointment", addActualAppointment);
-router.post("/obtain-appointment-requests", obtainAppointmentRequests);
-router.post("/obtain-actual-appointments", obtainActualAppointments);
-router.post("/deny-appointment-request", denyAppointmentRequest);
-router.post("/approve-appointment-request", approveAppointmentRequest);
-router.post("/cancel-actual-appointment", cancelActualAppointment);
+router.post("/add-appointment", addAppointment);
+router.post("/cancel-appointment", cancelAppointment);
+router.post("/obtain-appointments", obtainAppointments);
 
 // Video Recording Services Routes
 router.post("/add-video", addVideo);

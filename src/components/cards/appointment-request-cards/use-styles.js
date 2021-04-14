@@ -11,6 +11,15 @@ export const useStyles = makeStyles(theme => ({
     cardTitle: {
         marginBottom: 20
     },
+    doctorCardContainer: {
+        maxWidth: 850,
+        padding: 30,
+        marginTop: 20
+    },
+    doctorImageIcon: {
+        marginBottom: 20,
+        marginLeft: 345
+    },
     appointmentCard: {
         backgroundColor: "dodgerblue",
         padding: 15,
