@@ -6,13 +6,13 @@ import {Typography, Accordion, AccordionSummary, AccordionDetails, Link} from '@
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {getReportList} from "../../../redux/selectors/medical-reports-page/reports";
 import {getFullName} from "../../../redux/selectors/user/current-user";
-import {obtainReports} from "../../../redux/actions/medical-reports-page/reports";
+import {obtainReportsByUserName} from "../../../redux/actions/medical-reports-page/reports";
 
-const MedicalReportsPatientView = ({reportList, userName, obtainReports}) => {
+const MedicalReportsPatientView = ({reportList, obtainReportsByUserName}) => {
     const classes = useStyles();
 
     useEffect(() => {
-        obtainReports();
+        obtainReportsByUserName();
     });
 
     return (
@@ -20,36 +20,32 @@ const MedicalReportsPatientView = ({reportList, userName, obtainReports}) => {
             {
                 reportList.length > 0 ?
                     reportList.map(report => {
-                        if (userName === report.patientName) {
-                            return (
-                                <Accordion>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMoreIcon/>}
+                        return (
+                            <Accordion>
+                                <AccordionSummary
+                                    expandIcon={<ExpandMoreIcon/>}
+                                >
+                                    <Typography
+                                        className={classes.accordionHeading}
                                     >
-                                        <Typography
-                                            className={classes.accordionHeading}
-                                        >
-                                            {report.reportName}
-                                        </Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Typography variant="h5">
-                                            Report Date: {report.reportDate} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                            &nbsp; &nbsp; &nbsp; &nbsp; Patient Name: {report.patientName}
-                                            <br/>
-                                            <br/>
-                                            Doctor Name: {report.doctorName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                            &nbsp; &nbsp; &nbsp; &nbsp;
-                                            <Link onClick={() => window.open(report.reportFileUrl)}>
-                                                View Report
-                                            </Link>
-                                        </Typography>
-                                    </AccordionDetails>
-                                </Accordion>
-                            )
-                        } else {
-                            return null;
-                        }
+                                        {report.reportName}
+                                    </Typography>
+                                </AccordionSummary>
+                                <AccordionDetails>
+                                    <Typography variant="h5">
+                                        Report Date: {report.reportDate} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        &nbsp; &nbsp; &nbsp; &nbsp; Patient Name: {report.patientName}
+                                        <br/>
+                                        <br/>
+                                        Doctor Name: {report.doctorName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <Link onClick={() => window.open(report.reportFileUrl)}>
+                                            View Report
+                                        </Link>
+                                    </Typography>
+                                </AccordionDetails>
+                            </Accordion>
+                        )
                     })
                     :
                     <Accordion>
@@ -76,7 +72,7 @@ const MedicalReportsPatientView = ({reportList, userName, obtainReports}) => {
 MedicalReportsPatientView.propTypes = {
     reportList: PropTypes.array,
     userName: PropTypes.string.isRequired,
-    obtainReports: PropTypes.func.isRequired
+    obtainReportsByUserName: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -85,7 +81,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    obtainReports: () => dispatch(obtainReports())
+    obtainReportsByUserName: () => dispatch(obtainReportsByUserName())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MedicalReportsPatientView);

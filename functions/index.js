@@ -14,7 +14,8 @@ const {
     addReport,
     uploadReportFile,
     updateReportFileLocation,
-    obtainReports
+    obtainReports,
+    obtainReportsByUserName
 } = require("./handlers/medical-reports-services");
 const {addAppointment, cancelAppointment, obtainAppointments} = require("./handlers/appointment-request-services");
 const {
@@ -44,6 +45,7 @@ router.post("/add-report", addReport);
 router.post("/upload-report-file", FBAuth, uploadReportFile);
 router.post("/update-report-file-location", updateReportFileLocation);
 router.post("/obtain-reports", obtainReports);
+router.post("/obtain-reports-by-user-name", obtainReportsByUserName);
 
 // Appointment Request Services Routes
 router.post("/add-appointment", addAppointment);
