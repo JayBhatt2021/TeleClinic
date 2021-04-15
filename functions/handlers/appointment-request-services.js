@@ -10,6 +10,10 @@ const appointmentSchema = Joi.object({
     appointmentTime: Joi.string().required()
 });
 
+const obtainAppointmentsByUserNameSchema = Joi.object({
+    patientName: Joi.string().required()
+});
+
 // Adds an appointment to the patientAppointments collection
 // REQ: patientName, doctorName, visitReason, appointmentDate, appointmentTime
 // RES returns on success: Status 200, 'Appointment added successfully.'
@@ -94,3 +98,29 @@ exports.obtainAppointments = (req, res) => {
             res.status(200).send(appointmentsArray);
         });
 };
+
+// Obtains the appointments of a given patientName
+// REQ: patientName
+// RES returns on success: Status 200, all of the appointments of a given patientName
+// RES returns on fail: Status 400, bad request
+exports.obtainAppointmentsByUserName = (req, res) => {
+    const validation = obtainAppointmentsByUserNameSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    const patientName = req.body.patientName;
+
+    database.collection("patientAppointments")
+        .orderBy("patientName", "asc")
+        .onSnapshot((querySnapshot) => {
+            const appointmentsArray = [];
+            querySnapshot.forEach(doc => {
+                if (doc.data().patientName === patientName) {
+                    appointmentsArray.push(doc.data());
+                }
+            });
+            res.status(200).send(appointmentsArray);
+        });
+}

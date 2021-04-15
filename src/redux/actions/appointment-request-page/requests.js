@@ -1,4 +1,5 @@
 import fetchData from "../../../utils/api";
+import {getFullName} from "../../selectors/user/current-user";
 import {
     getAppointmentDate,
     getAppointmentTime,
@@ -140,6 +141,26 @@ function obtainAppointments() {
     };
 }
 
+function obtainAppointmentsByUserName() {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const params = {
+            patientName: getFullName(state)
+        };
+
+        const route = '/obtain-appointments-by-user-name';
+
+        return fetchData(route, params)
+            .then(res => {
+                dispatch(setAppointmentList(res));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
 export {
     SHOW_APPOINTMENT_REQUEST_VIEW,
     showAppointmentRequestView,
@@ -161,5 +182,6 @@ export {
     setPatientSearchField,
     addAppointment,
     cancelAppointment,
-    obtainAppointments
+    obtainAppointments,
+    obtainAppointmentsByUserName
 }

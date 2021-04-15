@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {Typography, Accordion, AccordionSummary, AccordionDetails, Link} from '@material-ui/core';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {getReportList} from "../../../redux/selectors/medical-reports-page/reports";
-import {getFullName} from "../../../redux/selectors/user/current-user";
 import {obtainReportsByUserName} from "../../../redux/actions/medical-reports-page/reports";
 
 const MedicalReportsPatientView = ({reportList, obtainReportsByUserName}) => {
@@ -71,13 +70,11 @@ const MedicalReportsPatientView = ({reportList, obtainReportsByUserName}) => {
 
 MedicalReportsPatientView.propTypes = {
     reportList: PropTypes.array,
-    userName: PropTypes.string.isRequired,
     obtainReportsByUserName: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    reportList: getReportList(state),
-    userName: getFullName(state)
+    reportList: getReportList(state)
 });
 
 const mapDispatchToProps = dispatch => ({

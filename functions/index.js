@@ -17,7 +17,12 @@ const {
     obtainReports,
     obtainReportsByUserName
 } = require("./handlers/medical-reports-services");
-const {addAppointment, cancelAppointment, obtainAppointments} = require("./handlers/appointment-request-services");
+const {
+    addAppointment,
+    cancelAppointment,
+    obtainAppointments,
+    obtainAppointmentsByUserName
+} = require("./handlers/appointment-request-services");
 const {
     addVideo,
     uploadVideoFile,
@@ -51,6 +56,7 @@ router.post("/obtain-reports-by-user-name", obtainReportsByUserName);
 router.post("/add-appointment", addAppointment);
 router.post("/cancel-appointment", cancelAppointment);
 router.post("/obtain-appointments", obtainAppointments);
+router.post("/obtain-appointments-by-user-name", obtainAppointmentsByUserName);
 
 // Video Recording Services Routes
 router.post("/add-video", addVideo);

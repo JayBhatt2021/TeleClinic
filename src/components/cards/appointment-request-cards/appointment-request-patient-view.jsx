@@ -4,15 +4,17 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {Button, Card, Typography} from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import {getFullName} from "../../../redux/selectors/user/current-user";
 import {getAppointmentList} from "../../../redux/selectors/appointment-request-page/requests";
-import {cancelAppointment, obtainAppointments} from "../../../redux/actions/appointment-request-page/requests";
+import {
+    cancelAppointment,
+    obtainAppointmentsByUserName
+} from "../../../redux/actions/appointment-request-page/requests";
 
-const AppointmentRequestPatientView = ({userName, appointmentList, obtainAppointments, cancelAppointment}) => {
+const AppointmentRequestPatientView = ({appointmentList, cancelAppointment, obtainAppointmentsByUserName}) => {
     const classes = useStyles();
 
     useEffect(() => {
-        obtainAppointments();
+        obtainAppointmentsByUserName();
     });
 
     return (
@@ -22,34 +24,30 @@ const AppointmentRequestPatientView = ({userName, appointmentList, obtainAppoint
                 {
                     appointmentList.length > 0 ?
                         appointmentList.map(appointment => {
-                            if (userName === appointment.patientName) {
-                                return (
-                                    <Card className={classes.appointmentCard}>
-                                        <Typography variant="h5" className={classes.appointmentCardText}>
-                                            Name: {appointment.patientName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                            Doctor: {appointment.doctorName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                                            Reason for Visit: {appointment.visitReason} &nbsp; &nbsp; &nbsp; &nbsp;
-                                            <br/>
-                                            <br/>
-                                            Appointment Date: {appointment.appointmentDate} &nbsp; &nbsp; &nbsp; &nbsp;
-                                            Appointment Time: {appointment.appointmentTime} &nbsp; &nbsp; &nbsp; &nbsp;
-                                            <Button
-                                                variant="contained"
-                                                className={classes.appointmentCardCancelButton}
-                                                startIcon={<DeleteIcon/>}
-                                                onClick={() => cancelAppointment(appointment.patientName,
-                                                    appointment.doctorName, appointment.visitReason,
-                                                    appointment.appointmentDate, appointment.appointmentTime)
-                                                }
-                                            >
-                                                Cancel
-                                            </Button>
-                                        </Typography>
-                                    </Card>
-                                )
-                            } else {
-                                return null;
-                            }
+                            return (
+                                <Card className={classes.appointmentCard}>
+                                    <Typography variant="h5" className={classes.appointmentCardText}>
+                                        Name: {appointment.patientName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        Doctor: {appointment.doctorName} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                                        Reason for Visit: {appointment.visitReason} &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <br/>
+                                        <br/>
+                                        Appointment Date: {appointment.appointmentDate} &nbsp; &nbsp; &nbsp; &nbsp;
+                                        Appointment Time: {appointment.appointmentTime} &nbsp; &nbsp; &nbsp; &nbsp;
+                                        <Button
+                                            variant="contained"
+                                            className={classes.appointmentCardCancelButton}
+                                            startIcon={<DeleteIcon/>}
+                                            onClick={() => cancelAppointment(appointment.patientName,
+                                                appointment.doctorName, appointment.visitReason,
+                                                appointment.appointmentDate, appointment.appointmentTime)
+                                            }
+                                        >
+                                            Cancel
+                                        </Button>
+                                    </Typography>
+                                </Card>
+                            )
                         })
                         :
                         <Typography align="center" variant="h5">
@@ -65,21 +63,19 @@ const AppointmentRequestPatientView = ({userName, appointmentList, obtainAppoint
 };
 
 AppointmentRequestPatientView.propTypes = {
-    userName: PropTypes.string.isRequired,
     appointmentList: PropTypes.array.isRequired,
     cancelAppointment: PropTypes.func.isRequired,
-    obtainAppointments: PropTypes.func.isRequired
+    obtainAppointmentsByUserName: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    userName: getFullName(state),
     appointmentList: getAppointmentList(state)
 });
 
 const mapDispatchToProps = dispatch => ({
     cancelAppointment: (patientName, doctorName, visitReason, appointmentDate, appointmentTime) =>
         dispatch(cancelAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime)),
-    obtainAppointments: () => dispatch(obtainAppointments())
+    obtainAppointmentsByUserName: () => dispatch(obtainAppointmentsByUserName())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(AppointmentRequestPatientView);
