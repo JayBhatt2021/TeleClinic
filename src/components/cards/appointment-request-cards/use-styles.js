@@ -3,13 +3,31 @@ import {
 } from "@material-ui/core";
 
 export const useStyles = makeStyles(theme => ({
-    cardContainer: {
+    adminCardContainer: {
         minWidth: 1000,
         padding: 10,
         marginTop: 20
     },
-    cardTitle: {
+    adminCardTitle: {
         marginBottom: 20
+    },
+    patientCardContainer: {
+        minWidth: 1000,
+        padding: 20,
+        marginTop: 20
+    },
+    patientCardTitle: {
+        marginTop: -10,
+        marginBottom: 20
+    },
+    doctorCardContainer: {
+        maxWidth: 850,
+        padding: 30,
+        marginTop: 20
+    },
+    doctorImageIcon: {
+        marginBottom: 20,
+        marginLeft: 345
     },
     appointmentCard: {
         backgroundColor: "dodgerblue",

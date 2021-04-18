@@ -2,7 +2,7 @@ import {combineReducers} from 'redux';
 import requests from './requests';
 
 const appointmentRequestPage = combineReducers({
-    requests,
+    requests
 });
 
 export default appointmentRequestPage;

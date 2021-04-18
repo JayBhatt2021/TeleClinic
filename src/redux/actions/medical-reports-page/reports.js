@@ -1,5 +1,6 @@
 import axios from 'axios';
 import fetchData from "../../../utils/api";
+import {getFullName} from "../../selectors/user/current-user";
 import {
     getDoctorName,
     getPatientName,
@@ -163,6 +164,26 @@ function obtainReports() {
     };
 }
 
+function obtainReportsByUserName() {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const params = {
+            patientName: getFullName(state)
+        };
+
+        const route = '/obtain-reports-by-user-name';
+
+        return fetchData(route, params)
+            .then(res => {
+                dispatch(setReportList(res));
+            })
+            .catch(err => {
+                console.log(err);
+            });
+    };
+}
+
 export {
     SHOW_DIALOG_BOX,
     showDialogBox,
@@ -185,5 +206,6 @@ export {
     addReport,
     uploadReportFile,
     updateReportFileLocation,
-    obtainReports
+    obtainReports,
+    obtainReportsByUserName
 }

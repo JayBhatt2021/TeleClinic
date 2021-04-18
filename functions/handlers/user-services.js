@@ -1,6 +1,5 @@
 const Joi = require('joi');
-const {database, admin} = require('../util/admin');
-const config = require('../util/config');
+const {database} = require('../util/admin');
 const firebase = require('firebase');
 
 const strongPasswordRegex = new RegExp("^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$");
@@ -16,6 +15,15 @@ const signUpSchema = Joi.object({
 const signInSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().regex(strongPasswordRegex, 'password').required(),
+});
+
+const fetchNotificationsSchema = Joi.object({
+    userId: Joi.string().required()
+});
+
+const viewNotificationsSchema = Joi.object({
+    userId: Joi.string().required(),
+    notificationId: Joi.string().required()
 });
 
 // Search for the verification code
@@ -159,21 +167,101 @@ exports.signOutUser = (req, res) => {
 
 // Will get user information
 // REQ: Authorization Header: tokenId, user must be signed in
-// RES: userId, fullName
+// RES: userId, email, fullName, userType
+// RES: Notifications: notificationId, message, viewedStatus
 exports.getUser = (req, res) => {
     let user = req.user;
+    let notifications = [];
 
     function sendResults(data) {
         res.status(200).send(data);
     }
 
-    database.collection("usersInfo").doc(user.uid).get().then(doc => {
-        let data = {
-            userId: user.uid,
-            email: doc.data().email,
-            fullName: doc.data().fullName,
-            userType: doc.data().userType
-        };
-        sendResults(data);
-    })
+    function addNotification(notificationData) {
+        notifications.push(notificationData);
+    }
+
+    database.collection("users").doc(user.uid).collection("notifications").get()
+        .then(snapshots => {
+            snapshots.forEach(doc => {
+                let notificationData = {
+                    notificationId: doc.id,
+                    message: doc.data().message,
+                    viewedStatus: doc.data().viewedStatus
+                };
+                addNotification(notificationData);
+            })
+        }).then(() => {
+            database.collection("usersInfo").doc(user.uid).get().then(doc => {
+                let data = {
+                    userId: user.uid,
+                    email: doc.data().email,
+                    fullName: doc.data().fullName,
+                    userType: doc.data().userType,
+                    notifications: notifications
+                };
+                sendResults(data);
+            })
+        })
+};
+
+// Will get notifications for the user
+// REQ: userId
+// RES: notificationId, message, viewedStatus
+exports.fetchNotifications = (req, res) => {
+    let notifications = [];
+    const validation = fetchNotificationsSchema.validate(req.body);
+    if (validation.error) {
+        let err = {message: validation.error.details[0].message};
+        console.log(validation.error.details[0].message);
+        return res.status(400).send(err);
+    }
+
+    const userId = req.body.userId;
+
+    function sendResults() {
+        res.status(200).send(notifications);
+    }
+
+    function addNotification(notificationData) {
+        notifications.push(notificationData);
+    }
+
+    database.collection("users").doc(userId).collection("notifications").get()
+        .then(snapshots => {
+            snapshots.forEach(doc => {
+                let notificationData = {
+                    notificationId: doc.id,
+                    message: doc.data().message,
+                    viewedStatus: doc.data().viewedStatus
+                };
+                addNotification(notificationData);
+                if (notifications.length === snapshots.size) {
+                    sendResults();
+                }
+            })
+        })
+};
+
+// Will set status of notification as viewed
+// REQ: userId, notificationId
+// RES: Status 200, Success message
+exports.viewNotification = (req, res) => {
+    const validation = viewNotificationsSchema.validate(req.body);
+    if (validation.error) {
+        let err = {message: validation.error.details[0].message};
+        console.log(validation.error.details[0].message);
+        return res.status(400).send(err);
+    }
+
+    function sendRes() {
+        res.status(200).send({message: "Success"});
+    }
+
+    const userId = req.body.userId;
+    const notificationId = req.body.notificationId;
+
+    let notificationRef = database.collection("users")
+        .doc(userId).collection("notifications").doc(notificationId);
+    notificationRef.update({viewedStatus: true}).then(() => sendRes())
 };

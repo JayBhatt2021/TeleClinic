@@ -1,33 +1,39 @@
 import React from 'react';
 import {useStyles} from './use-styles';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Card, Grid, TextField, Button, Typography, FormControl, InputLabel, Select} from '@material-ui/core';
-import {getFullName} from "../../../redux/selectors/user/current-user";
+import {Card, Grid, TextField, Button, Typography, InputLabel, Select, FormControl} from '@material-ui/core';
+import PropTypes from "prop-types";
 import {getAppointmentTime, getVisitReason} from "../../../redux/selectors/appointment-request-page/requests";
 import {
-    addAppointmentRequest,
+    addAppointment,
     setAppointmentDate,
     setAppointmentTime,
     setDoctorName,
+    setPatientName,
     setVisitReason
 } from "../../../redux/actions/appointment-request-page/requests";
 
-const PatientRequestWindow = ({
-                                  patientName,
-                                  visitReason,
-                                  appointmentTime,
-                                  setDoctorName,
-                                  setVisitReason,
-                                  setAppointmentDate,
-                                  setAppointmentTime,
-                                  addAppointmentRequest
-                              }) => {
+const AdminRequestWindow = ({
+                                 visitReason,
+                                 appointmentTime,
+                                 setPatientName,
+                                 setDoctorName,
+                                 setVisitReason,
+                                 setAppointmentDate,
+                                 setAppointmentTime,
+                                 addAppointment
+                             }) => {
     const classes = useStyles();
 
     return (
         <Card className={classes.requestCardContainer}>
-            <Typography align="center" variant="h4" className={classes.cardTitle}>Request Appointment Form</Typography>
+            <Typography
+                align="center"
+                variant="h4"
+                className={classes.adminCardTitle}
+            >
+                Schedule Appointment Form
+            </Typography>
             <Typography>
                 Please fill in the following information:
             </Typography>
@@ -36,8 +42,8 @@ const PatientRequestWindow = ({
                     autoFocus
                     id="patientName"
                     label="Patient Name"
-                    value={patientName}
-                    disabled={true}
+                    onChange={e => setPatientName(e.target.value.trim())}
+                    required={true}
                 />
                 <TextField
                     id="doctorName"
@@ -96,7 +102,7 @@ const PatientRequestWindow = ({
                     variant="contained"
                     color="primary"
                     className={classes.submitAppointmentButton}
-                    onClick={addAppointmentRequest}
+                    onClick={addAppointment}
                 >
                     Submit Appointment
                 </Button>
@@ -105,29 +111,29 @@ const PatientRequestWindow = ({
     )
 };
 
-PatientRequestWindow.propTypes = {
-    patientName: PropTypes.string.isRequired,
+AdminRequestWindow.propTypes = {
     visitReason: PropTypes.string,
     appointmentTime: PropTypes.string,
+    setPatientName: PropTypes.func.isRequired,
     setDoctorName: PropTypes.func.isRequired,
     setVisitReason: PropTypes.func.isRequired,
     setAppointmentDate: PropTypes.func.isRequired,
     setAppointmentTime: PropTypes.func.isRequired,
-    addAppointmentRequest: PropTypes.func.isRequired
+    addAppointment: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
-    patientName: getFullName(state),
     visitReason: getVisitReason(state),
     appointmentTime: getAppointmentTime(state)
 });
 
 const mapDispatchToProps = dispatch => ({
+    setPatientName: patientName => dispatch(setPatientName(patientName)),
     setDoctorName: doctorName => dispatch(setDoctorName(doctorName)),
     setVisitReason: visitReason => dispatch(setVisitReason(visitReason)),
     setAppointmentDate: appointmentDate => dispatch(setAppointmentDate(appointmentDate)),
     setAppointmentTime: appointmentTime => dispatch(setAppointmentTime(appointmentTime)),
-    addAppointmentRequest: () => dispatch(addAppointmentRequest())
+    addAppointment: () => dispatch(addAppointment())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PatientRequestWindow);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminRequestWindow);

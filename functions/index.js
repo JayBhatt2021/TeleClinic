@@ -7,23 +7,30 @@ const router = express();
 router.use(cors({origin: true}));
 
 // Assignment of handlers to variables
-const {verifyCode, signUpUser, signInUser, signOutUser, getUser} = require("./handlers/user-services");
+const {
+    verifyCode,
+    signUpUser,
+    signInUser,
+    signOutUser,
+    getUser,
+    fetchNotifications,
+    viewNotification
+} = require("./handlers/user-services");
 const {userSearch} = require("./handlers/user-search");
 const {obtainRealTimeUsers, addMessage, obtainRealTimeConversations} = require("./handlers/message-services");
 const {
     addReport,
     uploadReportFile,
     updateReportFileLocation,
-    obtainReports
+    obtainReports,
+    obtainReportsByUserName
 } = require("./handlers/medical-reports-services");
 const {
-    addAppointmentRequest,
-    addActualAppointment,
-    obtainAppointmentRequests,
-    obtainActualAppointments,
-    denyAppointmentRequest,
-    approveAppointmentRequest,
-    cancelActualAppointment
+    addAppointment,
+    cancelAppointment,
+    obtainAppointments,
+    obtainAppointmentsByUserName,
+    sendNotification
 } = require("./handlers/appointment-request-services");
 const {
     addVideo,
@@ -38,9 +45,11 @@ router.post("/sign-up", signUpUser);
 router.post("/sign-in", signInUser);
 router.post("/sign-out", FBAuth, signOutUser);
 router.post("/get-user", FBAuth, getUser);
+router.post("/fetch-notifications", fetchNotifications);
+router.post("/view-notification", viewNotification);
 
 // User Search Route
-router.post("/user-search", FBAuth, userSearch);
+router.post("/user-search", userSearch);
 
 // Message Services Routes
 router.post("/obtain-real-time-users", obtainRealTimeUsers);
@@ -52,15 +61,14 @@ router.post("/add-report", addReport);
 router.post("/upload-report-file", FBAuth, uploadReportFile);
 router.post("/update-report-file-location", updateReportFileLocation);
 router.post("/obtain-reports", obtainReports);
+router.post("/obtain-reports-by-user-name", obtainReportsByUserName);
 
 // Appointment Request Services Routes
-router.post("/add-appointment-request", addAppointmentRequest);
-router.post("/add-actual-appointment", addActualAppointment);
-router.post("/obtain-appointment-requests", obtainAppointmentRequests);
-router.post("/obtain-actual-appointments", obtainActualAppointments);
-router.post("/deny-appointment-request", denyAppointmentRequest);
-router.post("/approve-appointment-request", approveAppointmentRequest);
-router.post("/cancel-actual-appointment", cancelActualAppointment);
+router.post("/add-appointment", addAppointment);
+router.post("/cancel-appointment", cancelAppointment);
+router.post("/obtain-appointments", obtainAppointments);
+router.post("/obtain-appointments-by-user-name", obtainAppointmentsByUserName);
+router.post("/send-notification", sendNotification);
 
 // Video Recording Services Routes
 router.post("/add-video", addVideo);

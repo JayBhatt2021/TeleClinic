@@ -14,6 +14,10 @@ const updateReportFileLocationSchema = Joi.object({
     reportFileUrl: Joi.string().required()
 });
 
+const obtainReportsByUserNameSchema = Joi.object({
+    patientName: Joi.string().required()
+});
+
 // Adds a medical report to the reports collection
 // REQ: reportName, reportDate, patientName, and doctorName
 // RES returns on success: Status 200, 'Report added successfully.'
@@ -133,3 +137,29 @@ exports.obtainReports = (req, res) => {
             res.status(200).send(reportsArray);
         });
 };
+
+// Obtains the reports of a given patientName
+// REQ: patientName
+// RES returns on success: Status 200, all of the reports of a given patientName
+// RES returns on fail: Status 400, bad request
+exports.obtainReportsByUserName = (req, res) => {
+    const validation = obtainReportsByUserNameSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    const patientName = req.body.patientName;
+
+    database.collection("reports")
+        .orderBy("reportName", "asc")
+        .onSnapshot((querySnapshot) => {
+            const reportsArray = [];
+            querySnapshot.forEach(doc => {
+                if (doc.data().patientName === patientName) {
+                    reportsArray.push(doc.data());
+                }
+            });
+            res.status(200).send(reportsArray);
+        });
+}

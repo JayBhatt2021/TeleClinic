@@ -1,11 +1,14 @@
 import fetchData from "../../../utils/api";
+import {getFullName, getUserId} from "../../selectors/user/current-user";
 import {
     getAppointmentDate,
     getAppointmentTime,
     getDoctorName,
     getPatientName,
-    getVisitReason
+    getVisitReason,
+    getReceiverUserArray
 } from "../../selectors/appointment-request-page/requests";
+import {searchUser} from "../user/current-user";
 
 const SHOW_APPOINTMENT_REQUEST_VIEW = 'SHOW_APPOINTMENT_REQUEST_VIEW';
 const showAppointmentRequestView = () => {
@@ -77,28 +80,41 @@ const setPatientSearchField = patientSearchField => {
     }
 };
 
-function addAppointmentRequest() {
+const SET_RECEIVER_USER_ARRAY = 'SET_RECEIVER_USER_ARRAY';
+const setReceiverUserArray = receiverUserArray => {
+    return {
+        type: SET_RECEIVER_USER_ARRAY,
+        payload: receiverUserArray
+    }
+};
+
+function addAppointment() {
     return (dispatch, getState) => {
         const state = getState();
 
+        const doctorName = getDoctorName(state);
+
         const params = {
             patientName: getPatientName(state),
-            doctorName: getDoctorName(state),
+            doctorName: doctorName,
             visitReason: getVisitReason(state),
             appointmentDate: getAppointmentDate(state),
             appointmentTime: getAppointmentTime(state)
         };
 
-        const route = '/add-appointment-request';
+        const route = '/add-appointment';
 
-        dispatch(setDoctorName(''));
         dispatch(setVisitReason(''));
         dispatch(setAppointmentDate(''));
         dispatch(setAppointmentTime('8:00 A.M. - 9:00 A.M.'));
 
         return fetchData(route, params)
             .then(() => {
+                dispatch(searchUser());
+                dispatch(sendNotification(doctorName));
                 dispatch(showAppointmentRequestView());
+                dispatch(setPatientName(''));
+                dispatch(setDoctorName(''));
             })
             .catch(err => {
                 console.log(err);
@@ -106,119 +122,91 @@ function addAppointmentRequest() {
     };
 }
 
-function addActualAppointment() {
+function cancelAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
+    return () => {
+        const params = {
+            patientName: patientName,
+            doctorName: doctorName,
+            visitReason: visitReason,
+            appointmentDate: appointmentDate,
+            appointmentTime: appointmentTime
+        };
+
+        const route = '/cancel-appointment';
+
+        return fetchData(route, params)
+            .catch(err => {
+                console.error(err);
+            });
+    };
+}
+
+function obtainAppointments() {
+    return dispatch => {
+        const route = '/obtain-appointments';
+
+        return fetchData(route)
+            .then(res => {
+                dispatch(setAppointmentList(res));
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
+}
+
+function obtainAppointmentsByUserName() {
     return (dispatch, getState) => {
         const state = getState();
 
         const params = {
-            patientName: getPatientName(state),
-            doctorName: getDoctorName(state),
-            visitReason: getVisitReason(state),
-            appointmentDate: getAppointmentDate(state),
-            appointmentTime: getAppointmentTime(state)
+            patientName: getFullName(state)
         };
 
-        const route = '/add-actual-appointment';
-
-        dispatch(setPatientName(''));
-        dispatch(setDoctorName(''));
-        dispatch(setVisitReason(''));
-        dispatch(setAppointmentDate(''));
-        dispatch(setAppointmentTime('8:00 A.M. - 9:00 A.M.'));
+        const route = '/obtain-appointments-by-user-name';
 
         return fetchData(route, params)
-            .then(() => {
-                dispatch(showAppointmentRequestView());
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function obtainAppointmentRequests() {
-    return dispatch => {
-        const route = '/obtain-appointment-requests';
-
-        return fetchData(route)
             .then(res => {
                 dispatch(setAppointmentList(res));
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
             });
     };
 }
 
-function obtainActualAppointments() {
-    return dispatch => {
-        const route = '/obtain-actual-appointments';
+function sendNotification(doctorName) {
+    return (dispatch, getState) => {
+        const state = getState();
 
-        return fetchData(route)
-            .then(res => {
-                dispatch(setAppointmentList(res));
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
+        let receiverUserId = 'yn7CVLQ0dIeW2vbQVaBZXQPtyUD3';
+        const receiverUserArray = getReceiverUserArray(state);
+        const patientName = getPatientName(state);
 
-function denyAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
-    return () => {
+        // console.log(receiverUserArray);
+
+        receiverUserArray.forEach(function (objectItem) {
+            if (objectItem.item.fullName === patientName) {
+                // console.log(objectItem.item.fullName);
+                // console.log(objectItem.item.uId);
+                receiverUserId = objectItem.item.uId;
+                // console.log(receiverUserId);
+            }
+        })
+
         const params = {
-            patientName: patientName,
+            receiverId: receiverUserId,
             doctorName: doctorName,
-            visitReason: visitReason,
-            appointmentDate: appointmentDate,
-            appointmentTime: appointmentTime
+            senderId: getUserId(state)
         };
 
-        const route = '/deny-appointment-request';
+        const route = '/send-notification';
 
         return fetchData(route, params)
             .catch(err => {
-                console.log(err);
+                console.error(err);
             });
-    };
-}
-
-function approveAppointmentRequest(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
-    return () => {
-        const params = {
-            patientName: patientName,
-            doctorName: doctorName,
-            visitReason: visitReason,
-            appointmentDate: appointmentDate,
-            appointmentTime: appointmentTime
-        };
-
-        const route = '/approve-appointment-request';
-
-        return fetchData(route, params)
-            .catch(err => {
-                console.log(err);
-            });
-    };
-}
-
-function cancelActualAppointment(patientName, doctorName, visitReason, appointmentDate, appointmentTime) {
-    return () => {
-        const params = {
-            patientName: patientName,
-            doctorName: doctorName,
-            visitReason: visitReason,
-            appointmentDate: appointmentDate,
-            appointmentTime: appointmentTime
-        };
-
-        const route = '/cancel-actual-appointment';
-
-        return fetchData(route, params)
-            .catch(err => {
-                console.log(err);
-            });
-    };
+    }
 }
 
 export {
@@ -240,11 +228,11 @@ export {
     setAppointmentList,
     SET_PATIENT_SEARCH_FIELD,
     setPatientSearchField,
-    addAppointmentRequest,
-    addActualAppointment,
-    obtainAppointmentRequests,
-    obtainActualAppointments,
-    denyAppointmentRequest,
-    approveAppointmentRequest,
-    cancelActualAppointment
+    SET_RECEIVER_USER_ARRAY,
+    setReceiverUserArray,
+    addAppointment,
+    cancelAppointment,
+    obtainAppointments,
+    obtainAppointmentsByUserName,
+    sendNotification
 }
