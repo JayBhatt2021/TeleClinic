@@ -30,7 +30,7 @@ const AdminRequestWindow = ({
             <Typography
                 align="center"
                 variant="h4"
-                className={classes.cardTitle}
+                className={classes.adminCardTitle}
             >
                 Schedule Appointment Form
             </Typography>

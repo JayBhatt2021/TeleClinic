@@ -1,12 +1,14 @@
 import fetchData from "../../../utils/api";
-import {getFullName} from "../../selectors/user/current-user";
+import {getFullName, getUserId} from "../../selectors/user/current-user";
 import {
     getAppointmentDate,
     getAppointmentTime,
     getDoctorName,
     getPatientName,
-    getVisitReason
+    getVisitReason,
+    getReceiverUserArray
 } from "../../selectors/appointment-request-page/requests";
+import {searchUser} from "../user/current-user";
 
 const SHOW_APPOINTMENT_REQUEST_VIEW = 'SHOW_APPOINTMENT_REQUEST_VIEW';
 const showAppointmentRequestView = () => {
@@ -78,13 +80,23 @@ const setPatientSearchField = patientSearchField => {
     }
 };
 
+const SET_RECEIVER_USER_ARRAY = 'SET_RECEIVER_USER_ARRAY';
+const setReceiverUserArray = receiverUserArray => {
+    return {
+        type: SET_RECEIVER_USER_ARRAY,
+        payload: receiverUserArray
+    }
+};
+
 function addAppointment() {
     return (dispatch, getState) => {
         const state = getState();
 
+        const doctorName = getDoctorName(state);
+
         const params = {
             patientName: getPatientName(state),
-            doctorName: getDoctorName(state),
+            doctorName: doctorName,
             visitReason: getVisitReason(state),
             appointmentDate: getAppointmentDate(state),
             appointmentTime: getAppointmentTime(state)
@@ -92,15 +104,17 @@ function addAppointment() {
 
         const route = '/add-appointment';
 
-        dispatch(setPatientName(''));
-        dispatch(setDoctorName(''));
         dispatch(setVisitReason(''));
         dispatch(setAppointmentDate(''));
         dispatch(setAppointmentTime('8:00 A.M. - 9:00 A.M.'));
 
         return fetchData(route, params)
             .then(() => {
+                dispatch(searchUser());
+                dispatch(sendNotification(doctorName));
                 dispatch(showAppointmentRequestView());
+                dispatch(setPatientName(''));
+                dispatch(setDoctorName(''));
             })
             .catch(err => {
                 console.log(err);
@@ -122,7 +136,7 @@ function cancelAppointment(patientName, doctorName, visitReason, appointmentDate
 
         return fetchData(route, params)
             .catch(err => {
-                console.log(err);
+                console.error(err);
             });
     };
 }
@@ -136,7 +150,7 @@ function obtainAppointments() {
                 dispatch(setAppointmentList(res));
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
             });
     };
 }
@@ -156,9 +170,43 @@ function obtainAppointmentsByUserName() {
                 dispatch(setAppointmentList(res));
             })
             .catch(err => {
-                console.log(err);
+                console.error(err);
             });
     };
+}
+
+function sendNotification(doctorName) {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        let receiverUserId = 'yn7CVLQ0dIeW2vbQVaBZXQPtyUD3';
+        const receiverUserArray = getReceiverUserArray(state);
+        const patientName = getPatientName(state);
+
+        // console.log(receiverUserArray);
+
+        receiverUserArray.forEach(function (objectItem) {
+            if (objectItem.item.fullName === patientName) {
+                // console.log(objectItem.item.fullName);
+                // console.log(objectItem.item.uId);
+                receiverUserId = objectItem.item.uId;
+                // console.log(receiverUserId);
+            }
+        })
+
+        const params = {
+            receiverId: receiverUserId,
+            doctorName: doctorName,
+            senderId: getUserId(state)
+        };
+
+        const route = '/send-notification';
+
+        return fetchData(route, params)
+            .catch(err => {
+                console.error(err);
+            });
+    }
 }
 
 export {
@@ -180,8 +228,11 @@ export {
     setAppointmentList,
     SET_PATIENT_SEARCH_FIELD,
     setPatientSearchField,
+    SET_RECEIVER_USER_ARRAY,
+    setReceiverUserArray,
     addAppointment,
     cancelAppointment,
     obtainAppointments,
-    obtainAppointmentsByUserName
+    obtainAppointmentsByUserName,
+    sendNotification
 }

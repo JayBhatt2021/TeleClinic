@@ -2,7 +2,8 @@ import React, {useEffect} from 'react';
 import {useStyles} from './use-styles';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
-import {Button, Card, Typography} from '@material-ui/core';
+import {Button, Card, Grid, Typography} from '@material-ui/core';
+import NotificationsBell from "../../notifications/notifications-bell";
 import DeleteIcon from '@material-ui/icons/Delete';
 import {getAppointmentList} from "../../../redux/selectors/appointment-request-page/requests";
 import {
@@ -19,8 +20,17 @@ const AppointmentRequestPatientView = ({appointmentList, cancelAppointment, obta
 
     return (
         <div>
-            <Card className={classes.cardContainer}>
-                <Typography align="center" variant="h4" className={classes.cardTitle}>Current Appointments</Typography>
+            <Card className={classes.patientCardContainer}>
+                <Grid container justify="flex-end">
+                    <NotificationsBell/>
+                </Grid>
+                <Typography
+                    align="center"
+                    variant="h4"
+                    className={classes.patientCardTitle}
+                >
+                    Current Appointments
+                </Typography>
                 {
                     appointmentList.length > 0 ?
                         appointmentList.map(appointment => {

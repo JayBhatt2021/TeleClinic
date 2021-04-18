@@ -314,7 +314,9 @@ function signOut() {
                     userId: '',
                     email: '',
                     fullName: '',
-                    userType: ''
+                    userType: '',
+                    notifications: [],
+                    newNotificationCount: 0
                 }));
 
                 dispatch(showLogInError(''));

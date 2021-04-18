@@ -1,6 +1,5 @@
 const Joi = require('joi');
-const {database, admin} = require('../util/admin');
-const config = require("../util/config");
+const {database} = require('../util/admin');
 
 const appointmentSchema = Joi.object({
     patientName: Joi.string().required(),
@@ -12,6 +11,12 @@ const appointmentSchema = Joi.object({
 
 const obtainAppointmentsByUserNameSchema = Joi.object({
     patientName: Joi.string().required()
+});
+
+const notificationSchema = Joi.object({
+    receiverId: Joi.string().required(),
+    doctorName: Joi.string().required(),
+    senderId: Joi.string().required()
 });
 
 // Adds an appointment to the patientAppointments collection
@@ -124,3 +129,37 @@ exports.obtainAppointmentsByUserName = (req, res) => {
             res.status(200).send(appointmentsArray);
         });
 }
+
+// Send notification to a particular user
+// REQ: receiverId, doctorName, senderId
+// RES: Status 200, 'Notification added successfully.'
+exports.sendNotification = (req, res) => {
+    const validation = notificationSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    function sendResults(message) {
+        res.status(200).send(message);
+    }
+
+    const receiverId = req.body.receiverId;
+    const doctorName = req.body.doctorName;
+    const senderId = req.body.senderId;
+
+    let data = {
+        notificationId: receiverId + senderId,
+        message: `New appointment with Dr. ${doctorName} has been scheduled.`,
+        viewedStatus: false,
+        senderId: senderId,
+    };
+
+    let userRef = database.collection("users").doc(receiverId)
+        .collection("notifications").doc(receiverId + senderId);
+    userRef.set(data)
+        .then(function () {
+            const message = {message: "Notification added successfully."};
+            sendResults(message);
+        })
+};

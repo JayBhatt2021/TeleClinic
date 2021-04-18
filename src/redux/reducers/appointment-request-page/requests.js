@@ -7,7 +7,8 @@ import {
     SET_APPOINTMENT_DATE,
     SET_APPOINTMENT_TIME,
     SET_APPOINTMENT_LIST,
-    SET_PATIENT_SEARCH_FIELD
+    SET_PATIENT_SEARCH_FIELD,
+    SET_RECEIVER_USER_ARRAY
 } from "../../actions/appointment-request-page/requests";
 import {APPOINTMENT_REQUEST_VIEW, REQUEST_WINDOW} from "../../../utils/constantList";
 
@@ -19,7 +20,8 @@ const defaultState = {
     appointmentDate: '',
     appointmentTime: '8:00 A.M. - 9:00 A.M.',
     appointmentList: [],
-    patientSearchField: ''
+    patientSearchField: '',
+    receiverUserArray: []
 };
 
 const requests = (state = defaultState, action) => {
@@ -68,6 +70,11 @@ const requests = (state = defaultState, action) => {
             return {
                 ...state,
                 patientSearchField: action.payload
+            };
+        case SET_RECEIVER_USER_ARRAY:
+            return {
+                ...state,
+                receiverUserArray: action.payload
             };
         default:
             return state;

@@ -7,7 +7,15 @@ const router = express();
 router.use(cors({origin: true}));
 
 // Assignment of handlers to variables
-const {verifyCode, signUpUser, signInUser, signOutUser, getUser} = require("./handlers/user-services");
+const {
+    verifyCode,
+    signUpUser,
+    signInUser,
+    signOutUser,
+    getUser,
+    fetchNotifications,
+    viewNotification
+} = require("./handlers/user-services");
 const {userSearch} = require("./handlers/user-search");
 const {obtainRealTimeUsers, addMessage, obtainRealTimeConversations} = require("./handlers/message-services");
 const {
@@ -21,7 +29,8 @@ const {
     addAppointment,
     cancelAppointment,
     obtainAppointments,
-    obtainAppointmentsByUserName
+    obtainAppointmentsByUserName,
+    sendNotification
 } = require("./handlers/appointment-request-services");
 const {
     addVideo,
@@ -36,9 +45,11 @@ router.post("/sign-up", signUpUser);
 router.post("/sign-in", signInUser);
 router.post("/sign-out", FBAuth, signOutUser);
 router.post("/get-user", FBAuth, getUser);
+router.post("/fetch-notifications", fetchNotifications);
+router.post("/view-notification", viewNotification);
 
 // User Search Route
-router.post("/user-search", FBAuth, userSearch);
+router.post("/user-search", userSearch);
 
 // Message Services Routes
 router.post("/obtain-real-time-users", obtainRealTimeUsers);
@@ -57,6 +68,7 @@ router.post("/add-appointment", addAppointment);
 router.post("/cancel-appointment", cancelAppointment);
 router.post("/obtain-appointments", obtainAppointments);
 router.post("/obtain-appointments-by-user-name", obtainAppointmentsByUserName);
+router.post("/send-notification", sendNotification);
 
 // Video Recording Services Routes
 router.post("/add-video", addVideo);
