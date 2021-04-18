@@ -3,13 +3,18 @@ const {database, admin} = require('../util/admin');
 const config = require("../util/config");
 
 const addVideoSchema = Joi.object({
-    userName: Joi.string().required(),
+    receiverName: Joi.string().required(),
     videoName: Joi.string().required()
 });
 
 const updateVideoFileLocationSchema = Joi.object({
     videoName: Joi.string().required(),
     videoFileUrl: Joi.string().required()
+});
+
+const obtainVideosSchema = Joi.object({
+    receiverName: Joi.string().required(),
+    userType: Joi.string().required()
 });
 
 // Adds a video to the videos collection
@@ -27,12 +32,12 @@ exports.addVideo = (req, res) => {
         res.status(200).send(message);
     }
 
-    const userName = req.body.userName;
+    const receiverName = req.body.receiverName;
     const videoName = req.body.videoName;
 
     database.collection("videos").doc(videoName)
         .set({
-            userName: userName,
+            receiverName: receiverName,
             videoName: videoName,
             videoFileUrl: `https://firebasestorage.googleapis.com/v0/b/${config.storageBucket}/o/Heart.mp4?alt=media`
         })
@@ -115,16 +120,39 @@ exports.updateVideoFileLocation = (req, res) => {
         })
 };
 
-// Obtains all of the videos in the database
-// REQ: None
-// RES: All of the videos in the videos collection
+// Obtains some/all videos in the database
+// REQ: receiverName, userType
+// RES: Some/all of the videos in the videos collection
 exports.obtainVideos = (req, res) => {
-    database.collection("videos")
-        .onSnapshot((querySnapshot) => {
-            const videosArray = [];
-            querySnapshot.forEach(function (doc) {
-                videosArray.push(doc.data());
+    const validation = obtainVideosSchema.validate(req.body);
+    if (validation.error) {
+        let error = {message: validation.error.details[0].message};
+        return res.status(400).send(error);
+    }
+
+    const receiverName = req.body.receiverName;
+    const userType = req.body.userType;
+
+    if (userType === "PATIENT_TYPE") {
+        database.collection("videos")
+            .orderBy("receiverName", "asc")
+            .onSnapshot((querySnapshot) => {
+                const videosArray = [];
+                querySnapshot.forEach(doc => {
+                    if (doc.data().receiverName === receiverName) {
+                        videosArray.push(doc.data());
+                    }
+                });
+                res.status(200).send(videosArray);
             });
-            res.status(200).send(videosArray);
-        });
+    } else {
+        database.collection("videos")
+            .onSnapshot((querySnapshot) => {
+                const videosArray = [];
+                querySnapshot.forEach(function (doc) {
+                    videosArray.push(doc.data());
+                });
+                res.status(200).send(videosArray);
+            });
+    }
 };

@@ -20,10 +20,6 @@ export const REPORTS_LIST = 'REPORTS_LIST';
 export const APPOINTMENT_REQUEST_VIEW = 'APPOINTMENT_REQUEST_VIEW';
 export const REQUEST_WINDOW = 'REQUEST_WINDOW';
 
-// Video Recording Page
-export const MAIN_VIDEO_VIEW = 'MAIN_VIDEO_VIEW';
-export const VIDEO_CHAT_VIEW = 'VIDEO_CHAT_VIEW';
-
 // Password Errors
 export const WEAK_PASSWORD = 'WEAK_PASSWORD';
 export const PASSWORDS_DO_NOT_MATCH = 'PASSWORDS_DO_NOT_MATCH';

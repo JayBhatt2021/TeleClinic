@@ -1,21 +1,7 @@
 import axios from 'axios';
 import fetchData from "../../../utils/api";
-import {getFullName} from "../../selectors/user/current-user";
+import {getFullName, getUserType} from "../../selectors/user/current-user";
 import {getVideoFile, getVideoName} from "../../selectors/video-recording-page/videos";
-
-const SHOW_MAIN_VIDEO_VIEW = 'SHOW_MAIN_VIDEO_VIEW';
-const showMainVideoView = () => {
-    return {
-        type: SHOW_MAIN_VIDEO_VIEW
-    }
-};
-
-const SHOW_VIDEO_CHAT_VIEW = 'SHOW_VIDEO_CHAT_VIEW';
-const showVideoChatView = () => {
-    return {
-        type: SHOW_VIDEO_CHAT_VIEW
-    }
-};
 
 const SET_VIDEO_NAME = 'SET_VIDEO_NAME';
 const setVideoName = videoName => {
@@ -49,12 +35,12 @@ const setSavedVideosList = savedVideosList => {
     }
 };
 
-function addVideo() {
+function addVideo(videoRecipientName) {
     return (dispatch, getState) => {
         const state = getState();
 
         const params = {
-            userName: getFullName(state),
+            receiverName: videoRecipientName,
             videoName: getVideoName(state),
         };
 
@@ -114,10 +100,17 @@ function updateVideoFileLocation(videoFileLocation) {
 }
 
 function obtainVideos() {
-    return dispatch => {
+    return (dispatch, getState) => {
+        const state = getState();
+
+        const params = {
+            receiverName: getFullName(state),
+            userType: getUserType(state)
+        };
+
         const route = '/obtain-videos';
 
-        return fetchData(route)
+        return fetchData(route, params)
             .then(res => {
                 dispatch(setSavedVideosList(res));
             })
@@ -128,10 +121,6 @@ function obtainVideos() {
 }
 
 export {
-    SHOW_MAIN_VIDEO_VIEW,
-    showMainVideoView,
-    SHOW_VIDEO_CHAT_VIEW,
-    showVideoChatView,
     SET_VIDEO_NAME,
     setVideoName,
     SET_VIDEO_FILE,

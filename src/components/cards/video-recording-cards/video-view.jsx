@@ -7,7 +7,8 @@ import {Player} from 'video-react';
 import VideocamIcon from '@material-ui/icons/Videocam';
 import 'video-react/dist/video-react.css';
 import thumbnailIcon from "../../../utils/images/thumbnail.jpg";
-import {getFullName} from "../../../redux/selectors/user/current-user";
+import {DOCTOR_TYPE, ADMINISTRATOR_TYPE} from "../../../utils/constantList";
+import {getUserType} from "../../../redux/selectors/user/current-user";
 import {getSavedVideosList, getVideoFileUrl} from "../../../redux/selectors/video-recording-page/videos";
 import {
     addVideo,
@@ -17,16 +18,16 @@ import {
     setVideoName
 } from "../../../redux/actions/video-recording-page/videos";
 
-const MainVideoView = ({
-                           fullName,
-                           videoFileUrl,
-                           savedVideosList,
-                           setVideoName,
-                           setVideoFile,
-                           setVideoFileUrl,
-                           addVideo,
-                           obtainVideos
-                       }) => {
+const VideoView = ({
+                       userType,
+                       videoFileUrl,
+                       savedVideosList,
+                       setVideoName,
+                       setVideoFile,
+                       setVideoFileUrl,
+                       addVideo,
+                       obtainVideos
+                   }) => {
     const classes = useStyles();
 
     useEffect(() => {
@@ -37,7 +38,8 @@ const MainVideoView = ({
         setVideoFile(videoFileInput);
         let videoNameInput = prompt("Enter the name of the video.");
         setVideoName(videoNameInput);
-        addVideo();
+        let videoReceiverName = prompt("Now, enter the name of the video recipient.");
+        addVideo(videoReceiverName);
     };
 
     return (
@@ -63,29 +65,24 @@ const MainVideoView = ({
                     {
                         savedVideosList.length > 0 ?
                             savedVideosList.map(video => {
-                                if (video.userName === fullName) {
-                                    return (
-                                        <Tooltip
-                                            title={video.videoName}
-                                            justify={'center'}
-                                            style={{width: "100%"}}
-                                            className={classes.thumbnailButton}
+                                return (
+                                    <Tooltip
+                                        title={video.videoName}
+                                        justify={'center'}
+                                        style={{width: "100%"}}
+                                        className={classes.thumbnailButton}
+                                    >
+                                        <Button
+                                            onClick={() => setVideoFileUrl(video.videoFileUrl)}
                                         >
-                                            <Button
-                                                onClick={() => setVideoFileUrl(video.videoFileUrl)}
-                                            >
-                                                <img
-                                                    src={thumbnailIcon}
-                                                    alt="Thumbnail Icon"
-                                                    className={classes.thumbnailIcon}
-                                                />
-                                            </Button>
-                                        </Tooltip>
-                                    )
-                                }
-                                else {
-                                    return null;
-                                }
+                                            <img
+                                                src={thumbnailIcon}
+                                                alt="Thumbnail Icon"
+                                                className={classes.thumbnailIcon}
+                                            />
+                                        </Button>
+                                    </Tooltip>
+                                )
                             })
                             :
                             <Typography align="center" variant="h6">
@@ -93,32 +90,35 @@ const MainVideoView = ({
                             </Typography>
                     }
                 </Card>
-                <Button
-                    color="primary"
-                    variant="contained"
-                    component="label"
-                    startIcon={<VideocamIcon style={{fill: "white"}}/>}
-                    className={classes.videoUploadButton}
-                >
-                    <Typography variant="inherit" className={classes.videoUploadButtonText}>
-                        Add Video
-                    </Typography>
-                    <input
-                        id="addVideo"
-                        type="file"
-                        name="Add Video"
-                        accept="video/*"
-                        onChange={e => addSavedVideo(e.target.files[0])}
-                        hidden
-                    />
-                </Button>
+                {
+                    (userType === DOCTOR_TYPE || userType === ADMINISTRATOR_TYPE) ?
+                        <Button
+                            color="primary"
+                            variant="contained"
+                            component="label"
+                            startIcon={<VideocamIcon style={{fill: "white"}}/>}
+                            className={classes.videoUploadButton}
+                        >
+                            <Typography variant="inherit" className={classes.videoUploadButtonText}>
+                                Add Video
+                            </Typography>
+                            <input
+                                id="addVideo"
+                                type="file"
+                                name="Add Video"
+                                accept="video/*"
+                                onChange={e => addSavedVideo(e.target.files[0])}
+                                hidden
+                            />
+                        </Button> : null
+                }
             </Grid>
         </Grid>
     )
 };
 
-MainVideoView.propTypes = {
-    fullName: PropTypes.func.isRequired,
+VideoView.propTypes = {
+    userType: PropTypes.string.isRequired,
     videoFileUrl: PropTypes.string,
     savedVideosList: PropTypes.array.isRequired,
     setVideoName: PropTypes.func.isRequired,
@@ -129,7 +129,7 @@ MainVideoView.propTypes = {
 };
 
 const mapStateToProps = state => ({
-    fullName: getFullName(state),
+    userType: getUserType(state),
     videoFileUrl: getVideoFileUrl(state),
     savedVideosList: getSavedVideosList(state)
 });
@@ -138,8 +138,8 @@ const mapDispatchToProps = dispatch => ({
     setVideoName: videoName => dispatch(setVideoName(videoName)),
     setVideoFile: videoFile => dispatch(setVideoFile(videoFile)),
     setVideoFileUrl: videoFileUrl => dispatch(setVideoFileUrl(videoFileUrl)),
-    addVideo: () => dispatch(addVideo()),
+    addVideo: videoRecipientName => dispatch(addVideo(videoRecipientName)),
     obtainVideos: () => dispatch(obtainVideos())
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(MainVideoView);
+export default connect(mapStateToProps, mapDispatchToProps)(VideoView);
