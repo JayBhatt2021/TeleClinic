@@ -1,7 +1,3 @@
-#!/usr/bin/env sh
-# Load Husky
-. "$(dirname -- "$0")/_/husky.sh"
-
 echo "Styling, testing, and building your project before committing..."
 
 # Check TypeScript type standards

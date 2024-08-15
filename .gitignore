@@ -1,21 +1,33 @@
 # Dependencies
 /node_modules
+/.pnp
+.pnp.js
+
+# Database
+*.db
 
 # Testing
 /coverage
 
 # Next.js
-/.next/
-/out/
+/.next
+/out
+
+# Cache
+.swc/
 
 # Production
 /build
 
 # Debug
 npm-debug.log*
+pnpm-debug.log*
 
 # Local Environment Files
 .env*.local
+
+# Local Folder
+local
 
 # Vercel
 .vercel
