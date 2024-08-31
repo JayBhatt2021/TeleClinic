@@ -8,7 +8,7 @@ import {
   query,
 } from "firebase/firestore";
 import { FormEvent, useEffect, useState } from "react";
-import { db } from "./firebase";
+import { db } from "./firebase/firebase";
 
 interface Item {
   id: string;
