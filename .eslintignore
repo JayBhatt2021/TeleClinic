@@ -1,0 +1,15 @@
+# Node
+node_modules
+package-lock.json
+
+# Out Directory
+out
+
+# Next.js Build Directory
+.next
+
+# Next.js TypeScript Declaration File
+next-env.d.ts
+
+# Static Assets Directory
+public

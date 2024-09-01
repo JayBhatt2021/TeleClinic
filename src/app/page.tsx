@@ -1,14 +1,8 @@
 "use client";
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  onSnapshot,
-  query,
-} from "firebase/firestore";
+import React from "react";
+import { addDoc, collection, deleteDoc, doc, onSnapshot, query } from "firebase/firestore";
 import { FormEvent, useEffect, useState } from "react";
-import { db } from "./firebase/firebase";
+import { db } from "../firebase/firebase";
 
 interface Item {
   id: string;
@@ -24,8 +18,7 @@ const DEFAULT_NEW_ITEM: Item = {
 
 const COLLECTION_PATH = "items";
 
-const calculateTotal = (itemList: Item[]): number =>
-  itemList.reduce((sum, item) => sum + item.price, 0);
+const calculateTotal = (itemList: Item[]): number => itemList.reduce((sum, item) => sum + item.price, 0);
 
 const Home = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -69,8 +62,7 @@ const Home = () => {
   }, []);
 
   // Delete item from database
-  const deleteItem = async (id: string) =>
-    await deleteDoc(doc(db, COLLECTION_PATH, id));
+  const deleteItem = async (id: string) => await deleteDoc(doc(db, COLLECTION_PATH, id));
 
   return (
     <main className="min-h-screen p-4 sm:p-24 flex flex-col items-center justify-between">
@@ -92,9 +84,7 @@ const Home = () => {
               max="1000"
               step="0.01"
               value={newItem.price}
-              onChange={(e) =>
-                setNewItem({ ...newItem, price: Number(e.target.value) })
-              }
+              onChange={(e) => setNewItem({ ...newItem, price: Number(e.target.value) })}
             />
             <button
               className="p-3 text-xl text-white bg-slate-950 hover:bg-slate-900"
