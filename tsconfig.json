@@ -1,60 +1,84 @@
+// Check https://www.typescriptlang.org/tsconfig/ to see more config options.
 {
   "compilerOptions": {
-    // Basic Options
-    "target": "ESNext",
+    // Type Checking
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "alwaysStrict": true,
+    "exactOptionalPropertyTypes": false,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitAny": true,
+    "noImplicitOverride": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noPropertyAccessFromIndexSignature": false,
+    "noUncheckedIndexedAccess": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strict": true,
+    "strictBindCallApply": true,
+    "strictFunctionTypes": true,
+    "strictNullChecks": true,
+    "strictPropertyInitialization": true,
+    "useUnknownInCatchVariables": true,
+
+    // Modules
+    "allowArbitraryExtensions": false,
+    "allowImportingTsExtensions": false,
+    "allowUmdGlobalAccess": false,
+    "baseUrl": "./",
     "module": "esnext",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "jsx": "preserve",
-    "outDir": "out",
-    "baseUrl": ".",
+    "moduleResolution": "bundler",
+    "noResolve": false,
     "paths": {
       "@/*": ["./src/*"],
       "@/public/*": ["./public/*"]
     },
-
-    // Strict Type-Checking Options
-    "strict": true,
-    "strictNullChecks": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "alwaysStrict": true,
-
-    // Additional Checks
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedIndexedAccess": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "allowUnreachableCode": false,
-    "allowUnusedLabels": false,
-
-    // Module Resolution Options
-    "moduleResolution": "bundler",
     "resolveJsonModule": true,
+    "resolvePackageJsonExports": true,
+    "resolvePackageJsonImports": true,
 
-    // Source Map Options
+    // Emit
+    "declaration": true,
+    "newLine": "lf",
+    "noEmit": true,
+    "outDir": "out",
+    "preserveConstEnums": true,
+    "removeComments": true,
     "sourceMap": true,
 
-    // Advanced Options
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "preserveConstEnums": true,
-    "incremental": true,
-    "isolatedModules": true,
-    "checkJs": true,
+    // JavaScript Support
     "allowJs": true,
-    "noEmit": true,
-    "declaration": true,
-    "pretty": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
+    "checkJs": true,
 
-    // Plugins
+    // Editor Support
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+
+    // Interop Constraints
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+
+    // Language and Environment
+    "jsx": "preserve",
+    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "target": "ESNext",
+
+    // Projects
+    "incremental": true,
+
+    // Output Formatting
+    "noErrorTruncation": true,
+    "pretty": true,
+
+    // Completeness
+    "skipLibCheck": true
   },
   "include": ["**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "next-env.d.ts"],
   "exclude": ["node_modules", "out"]
