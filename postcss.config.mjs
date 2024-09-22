@@ -1,4 +1,6 @@
-/** @type {import('postcss-load-config').Config} */
+// See https://postcss.org/docs/postcss-plugin-guidelines for more guildlines.
+
+/** @type {import("postcss-load-config").Config} */
 const postCssConfig = {
   plugins: {
     tailwindcss: {},
