@@ -2,7 +2,6 @@
 
 /** @type {import("next").NextConfig} */
 const nextConfig = {
-  basePath: "",
   crossOrigin: "anonymous",
   reactStrictMode: true,
 };
