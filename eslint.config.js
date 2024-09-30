@@ -8,7 +8,7 @@ import globals from "globals";
 const esLintConfig = [
   {
     name: "teleclinic/recommended",
-    files: ["**/*.{js,ts,jsx,tsx,mdx,css}"],
+    files: ["**/*.{js,ts,jsx,tsx,mdx,json}"],
     ignores: [
       "**/.next",
       "**/node_modules",

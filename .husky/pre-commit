@@ -1,29 +1,19 @@
-echo "Styling, testing, and building your project before committing..."
+# Move to the project root
+cd "$(dirname "$0")/.." || exit
 
-# Check TypeScript type standards
-npm run check-types || {
-    echo "Failed type check. Make the required changes listed above."
-    exit 1
-}
-
-# Check Prettier format standards
-npm run check-format || {
-    echo "Prettier check failed. Run 'npm run format', add changes, and try committing again."
-    exit 1
-}
-
-# Check ESLint code quality standards
-npm run check-lint || {
-    echo "ESLint check failed. Make the required changes listed above, add changes, and try committing again."
+# Run lint-staged sequentially to prevent conflicts
+echo "Running lint-staged checks..."
+npx lint-staged --concurrent false || {
+    echo "Lint-staged checks failed. Please fix the issues, and try again."
     exit 1
 }
 
 # Build the project
-echo "The code looks fine. Building now..."
+echo "The code looks fine. Starting the build process..."
 npm run build || {
-    echo "The Next build failed. View the errors listed above to see why."
+    echo "The Next.js build failed. Please review the errors above."
     exit 1
 }
 
-# Commit if everything passes
-echo "The Next build succeeded. Committing now..."
+# Commit the changes
+echo "The Next.js build succeeded. Proceeding to commit..."
