@@ -10,7 +10,6 @@ const prettierConfig = {
   printWidth: 120,
   quoteProps: "consistent",
   proseWrap: "always",
-  endOfLine: "lf",
   plugins: ["prettier-plugin-tailwindcss"],
 };
 
