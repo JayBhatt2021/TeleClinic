@@ -8,7 +8,7 @@ import globals from "globals";
 const esLintConfig = [
   {
     name: "teleclinic/recommended",
-    files: ["**/*.{js,ts,jsx,tsx,mdx}"],
+    files: ["**/*.{js,ts,jsx,tsx,mdx,css}"],
     ignores: [
       "**/.next",
       "**/node_modules",
@@ -18,8 +18,6 @@ const esLintConfig = [
       "**/package-lock.json",
     ],
     languageOptions: {
-      ecmaVersion: "latest",
-      sourceType: "module",
       globals: {
         ...globals.browser,
         ...globals.jest,
@@ -30,10 +28,6 @@ const esLintConfig = [
           jsx: true,
         },
       },
-    },
-    linterOptions: {
-      noInlineConfig: false,
-      reportUnusedDisableDirectives: "warn",
     },
     plugins: {
       react,
