@@ -8,14 +8,13 @@ import globals from "globals";
 const esLintConfig = [
   {
     name: "teleclinic/recommended",
-    files: ["**/*.{js,ts,jsx,tsx,mdx,json}"],
+    files: ["**/*.ts", "**/*.tsx", "**/*.jsx"],
     ignores: [
-      "**/.next",
-      "**/node_modules",
-      "**/out",
-      "**/public",
-      "**/next-env.d.ts",
-      "**/package-lock.json",
+      "**/.next/",
+      "**/out/",
+      "**/public/",
+      "next-env.d.ts",
+      "package-lock.json",
     ],
     languageOptions: {
       globals: {
