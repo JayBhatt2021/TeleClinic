@@ -1,5 +1,5 @@
 # Move to the project root
-cd "$(dirname "$0")/.." || exit
+cd "$(dirname "$0")/.." || exit 1
 
 # Run lint-staged sequentially to prevent conflicts
 echo "Running lint-staged checks..."
