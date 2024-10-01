@@ -11,4 +11,3 @@ const lintStagedConfig = {
 };
 
 export default lintStagedConfig;
-1;
