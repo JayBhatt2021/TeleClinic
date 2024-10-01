@@ -1,17 +1,46 @@
 {
   // General Editor Settings
-  "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.formatOnPaste": true,
-  "editor.formatOnSave": true,
-
-  // Code Actions on Save
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit",
     "source.fixAll.format": "explicit",
     "source.organizeImports": "explicit"
   },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
 
-  // ShellScript Specific Settings
+  // File Associations
+  "files.associations": {
+    "*.css": "tailwindcss"
+  },
+
+  // CSS Settings
+  "css.format.spaceAroundSelectorSeparator": true,
+  "css.lint.duplicateProperties": "warning",
+  "css.lint.emptyRules": "error",
+  "css.lint.float": "warning",
+  "css.lint.fontFaceProperties": "error",
+  "css.lint.idSelector": "warning",
+  "css.lint.important": "warning",
+  "css.lint.propertyIgnoredDueToDisplay": "error",
+  "css.lint.universalSelector": "warning",
+  "css.lint.zeroUnits": "warning",
+
+  // Dotenv Files Specific Settings
+  "[dotenv]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80
+  },
+
+  // Ignore Files Specific Settings
+  "[ignore]": {
+    "editor.defaultFormatter": "foxundermoon.shell-format",
+    "editor.wordWrap": "wordWrapColumn",
+    "editor.wordWrapColumn": 80
+  },
+
+  // ShellScript Files Specific Settings
   "[shellscript]": {
     "editor.defaultFormatter": "foxundermoon.shell-format",
     "editor.wordWrap": "wordWrapColumn",
