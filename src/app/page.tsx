@@ -1,7 +1,13 @@
 "use client";
-import React from "react";
-import { addDoc, collection, deleteDoc, doc, onSnapshot, query } from "firebase/firestore";
-import { FormEvent, useEffect, useState } from "react";
+import {
+  addDoc,
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  query,
+} from "firebase/firestore";
+import { type FormEvent, useEffect, useState } from "react";
 import { db } from "../firebase/firebase";
 
 interface Item {
@@ -18,7 +24,8 @@ const DEFAULT_NEW_ITEM: Item = {
 
 const COLLECTION_PATH = "items";
 
-const calculateTotal = (itemList: Item[]): number => itemList.reduce((sum, item) => sum + item.price, 0);
+const calculateTotal = (itemList: Item[]): number =>
+  itemList.reduce((sum, item) => sum + item.price, 0);
 
 const Home = () => {
   const [items, setItems] = useState<Item[]>([]);
@@ -62,32 +69,35 @@ const Home = () => {
   }, []);
 
   // Delete item from database
-  const deleteItem = async (id: string) => await deleteDoc(doc(db, COLLECTION_PATH, id));
+  const deleteItem = async (id: string) =>
+    await deleteDoc(doc(db, COLLECTION_PATH, id));
 
   return (
-    <main className="min-h-screen p-4 sm:p-24 flex flex-col items-center justify-between">
-      <div className="w-full max-w-5xl font-mono text-sm items-center justify-between">
-        <h1 className="p-4 text-4xl text-center">Expense Tracker</h1>
-        <div className="p-4 rounded-lg bg-slate-800">
+    <main className="flex min-h-screen flex-col items-center justify-between p-4 sm:p-24">
+      <div className="w-full max-w-5xl items-center justify-between font-mono text-sm">
+        <h1 className="p-4 text-center text-4xl">Expense Tracker</h1>
+        <div className="rounded-lg bg-slate-800 p-4">
           <form className="grid grid-cols-6 items-center text-black">
             <input
-              className="col-span-3 p-3 border"
+              className="col-span-3 border p-3"
               type="text"
               placeholder="Enter Item"
               value={newItem.name}
               onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
             />
             <input
-              className="col-span-2 p-3 border mx-3"
+              className="col-span-2 mx-3 border p-3"
               type="number"
               min="0"
               max="1000"
               step="0.01"
               value={newItem.price}
-              onChange={(e) => setNewItem({ ...newItem, price: Number(e.target.value) })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, price: Number(e.target.value) })
+              }
             />
             <button
-              className="p-3 text-xl text-white bg-slate-950 hover:bg-slate-900"
+              className="bg-slate-950 p-3 text-xl text-white hover:bg-slate-900"
               type="submit"
               onSubmit={(e) => addItem(e)}
             >
@@ -97,12 +107,12 @@ const Home = () => {
           <ul>
             {items.map((item, id) => (
               <li className="my-4 flex bg-slate-950" key={id}>
-                <div className="p-4 w-full flex justify-between">
+                <div className="flex w-full justify-between p-4">
                   <span className="capitalize">{item.name}</span>
                   <span>${item.price.toFixed(2)}</span>
                 </div>
                 <button
-                  className="border-l-2 border-slate-900 hover:bg-slate-900 w-16"
+                  className="w-16 border-l-2 border-slate-900 hover:bg-slate-900"
                   onClick={() => deleteItem(item.id)}
                 >
                   X
